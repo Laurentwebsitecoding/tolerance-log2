@@ -1,0 +1,1763 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Tolerance Log - a daily record of tube-feed tolerance and weight for patients, dietitians and procurement. Student concept, example data.">
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font:14px/1.5 system-ui,sans-serif}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>Find the Feed That Fits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+/* Layout: a scrolling product site — scrubbable hero, a three-screen phone,
+   a data workbench, the paper artefacts, a pilot sizer, the hard questions. */
+:root{
+  --bg:#f7f5ec; --surface:#ffffff; --surface-2:#f1eee2; --surface-3:#e8e4d5;
+  --ink:#1b2a1d; --ink-2:#4f5e4d; --ink-3:#7c867a;
+  --green:#2f5134; --green-2:#426a44; --green-soft:#e3ebdf; --leaf:#7fa64a;
+  --violet:#6b4c9a; --violet-soft:#ece6f5;
+  --line:#dfdbca; --line-2:#cdc7b2;
+  --deep:#243d26; --on-deep:#f3f6ef; --on-deep-2:#c6d4bf;
+  --sev-0:#e7e3d4; --sev-1:#e3a566; --sev-2:#cc7a38; --sev-3:#a9521f; --sev-4:#7a330f;
+  --on-sev:#ffffff; --on-sev-1:#3d2206;
+  --paper:#fffdf6;
+  --shadow:0 1px 2px rgba(27,42,29,.05),0 10px 30px -14px rgba(27,42,29,.22);
+  --r:16px; --r-sm:10px;
+  --f-display:"Fraunces","Iowan Old Style",Georgia,serif;
+  --f-ui:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12160f; --surface:#1b2017; --surface-2:#232a1e; --surface-3:#2c3326;
+  --ink:#ecebe0; --ink-2:#b1b9a7; --ink-3:#848c7b;
+  --green:#8fbd78; --green-2:#a6cd92; --green-soft:#222e1e; --leaf:#b4d47a;
+  --violet:#b49ce0; --violet-soft:#282237;
+  --line:#2e352a; --line-2:#424a3a;
+  --deep:#192214; --on-deep:#eef3e9; --on-deep-2:#aebda6;
+  --sev-0:#2a3024; --sev-1:#7d5028; --sev-2:#a86a2e; --sev-3:#d19250; --sev-4:#f0bd82;
+  --on-sev:#17190f; --on-sev-1:#efe6d7; --paper:#1f2419;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#12160f; --surface:#1b2017; --surface-2:#232a1e; --surface-3:#2c3326;
+  --ink:#ecebe0; --ink-2:#b1b9a7; --ink-3:#848c7b;
+  --green:#8fbd78; --green-2:#a6cd92; --green-soft:#222e1e; --leaf:#b4d47a;
+  --violet:#b49ce0; --violet-soft:#282237;
+  --line:#2e352a; --line-2:#424a3a;
+  --deep:#192214; --on-deep:#eef3e9; --on-deep-2:#aebda6;
+  --sev-0:#2a3024; --sev-1:#7d5028; --sev-2:#a86a2e; --sev-3:#d19250; --sev-4:#f0bd82;
+  --on-sev:#17190f; --on-sev-1:#efe6d7; --paper:#1f2419;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:15.5px;line-height:1.58;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:40}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+p{margin:0}
+ul{margin:0}
+button,input,select{font:inherit;color:inherit}
+a{color:var(--green);text-underline-offset:3px}
+:focus-visible{outline:2.5px solid var(--violet);outline-offset:3px;border-radius:5px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+.inner{max-width:1160px;margin-inline:auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));}
+section{scroll-margin-top:66px}
+.sechead{display:grid;gap:9px;max-width:60ch;margin-bottom:26px}
+.eyebrow{font-size:.68rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--leaf)}
+h2{font-family:var(--f-display);font-weight:600;font-size:clamp(1.55rem,1.2rem+1.5vw,2.4rem);letter-spacing:-.016em;line-height:1.12}
+h3{font-size:1.04rem;font-weight:600;letter-spacing:-.005em}
+.sub{color:var(--ink-2);max-width:62ch}
+
+/* hero */
+.hero{background:var(--deep);color:var(--on-deep)}
+.hero .inner{padding-block:26px 46px;display:grid;gap:30px}
+.brandrow{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.mark{width:30px;height:30px;border-radius:8px;background:var(--on-deep);display:grid;place-items:center;flex:none}
+.mark svg{width:16px;height:18px}
+.brandrow b{font-weight:600;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase}
+.hlang{margin-left:auto;display:flex;gap:3px;border:1px solid rgba(243,246,239,.32);border-radius:999px;padding:3px;flex:none}
+.hlang button{border:0;background:none;border-radius:999px;padding:5px 15px;font-size:.78rem;font-weight:500;cursor:pointer;color:var(--on-deep-2)}
+.hlang button:hover{color:var(--on-deep)}
+.hlang button[aria-pressed=true]{background:var(--on-deep);color:var(--deep);font-weight:600}
+.herogrid{display:grid;gap:34px;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);align-items:center}
+@media (max-width:900px){.herogrid{grid-template-columns:minmax(0,1fr)}}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(2.3rem,1.3rem+3.6vw,3.9rem);line-height:1.02;letter-spacing:-.022em}
+.herotext{display:grid;gap:18px}
+.herotext>p{color:var(--on-deep-2);font-size:clamp(1rem,.94rem+.35vw,1.14rem);max-width:46ch}
+.ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.btn{border:0;border-radius:999px;padding:12px 22px;font-weight:600;font-size:.92rem;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.solid{background:var(--on-deep);color:var(--deep)}
+.btn.solid:hover{filter:brightness(.93)}
+.btn.wire{background:none;border:1px solid rgba(243,246,239,.4);color:var(--on-deep)}
+.btn.wire:hover{background:rgba(243,246,239,.12)}
+.heropanel{background:rgba(255,255,255,.055);border:1px solid rgba(243,246,239,.16);border-radius:var(--r);padding:17px;display:grid;gap:12px}
+.hp-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.heropanel h4{font-size:.9rem;font-weight:600}
+.hp-sub{font-size:.76rem;color:var(--on-deep-2);font-family:var(--f-mono)}
+.scrubrow{display:flex;align-items:center;gap:12px}
+.scrubrow input[type=range]{flex:1;min-width:0;accent-color:var(--leaf)}
+.rep{background:none;border:1px solid rgba(243,246,239,.35);color:var(--on-deep);border-radius:999px;padding:5px 13px;font-size:.76rem;cursor:pointer;flex:none}
+.rep:hover{background:rgba(243,246,239,.12)}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+.nav .inner{display:flex;gap:26px;overflow-x:auto;scrollbar-width:none}
+.nav .inner::-webkit-scrollbar{display:none}
+.nav a{padding:14px 0 12px;border-bottom:2.5px solid transparent;color:var(--ink-3);text-decoration:none;font-size:.88rem;font-weight:500;white-space:nowrap}
+.nav a:hover{color:var(--ink-2)}
+.nav a.on{color:var(--ink);border-bottom-color:var(--green)}
+
+main>section>.inner{padding-block:52px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+
+/* problem */
+.probgrid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(252px,1fr))}
+.prob{display:grid;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.prob .big{font-size:2.1rem;font-weight:600;letter-spacing:-.025em;line-height:1;color:var(--green)}
+.prob p{font-size:.9rem;color:var(--ink-2)}
+.quote{border-left:3px solid var(--leaf);padding:4px 0 4px 16px;display:grid;gap:7px;margin-top:22px;max-width:62ch}
+.quote q{font-family:var(--f-display);font-size:1.14rem;font-style:italic;line-height:1.45}
+.quote cite{font-style:normal;font-size:.8rem;color:var(--ink-3)}
+
+/* phone */
+.howgrid{display:grid;gap:28px;grid-template-columns:minmax(0,310px) minmax(0,1fr);align-items:start}
+@media (max-width:860px){.howgrid{grid-template-columns:minmax(0,1fr)}}
+.phonecol{display:grid;gap:12px;justify-items:center}
+.phone{background:var(--surface);border:1px solid var(--line-2);border-radius:30px;padding:9px;box-shadow:var(--shadow);max-width:310px;width:100%}
+.screen{background:var(--surface-2);border-radius:23px;overflow:hidden;display:grid;grid-template-rows:auto 1fr auto;min-height:566px}
+.scr-top{background:var(--deep);color:var(--on-deep);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.scr-top .who{font-weight:600;font-size:.98rem;display:block}
+.scr-top .when{font-size:.74rem;color:var(--on-deep-2);font-family:var(--f-mono);display:block}
+.streak{font-size:.68rem;font-family:var(--f-mono);color:var(--on-deep);border:1px solid rgba(243,246,239,.34);border-radius:999px;padding:3px 9px;white-space:nowrap;flex:none}
+.scr-body{padding:15px 16px 16px;display:grid;gap:14px;align-content:start;overflow:auto}
+.field{display:grid;gap:6px}
+.field>label,.fieldlab{font-size:.67rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+select{width:100%;padding:9px 11px;border-radius:var(--r-sm);border:1px solid var(--line-2);background:var(--surface);font-size:.84rem}
+.volrow{display:flex;align-items:center;gap:11px}
+.volrow input[type=range]{flex:1;min-width:0;accent-color:var(--green)}
+.volval{font-family:var(--f-mono);font-size:1.05rem;font-weight:500;width:50px;text-align:right;flex:none}
+.symptoms{display:grid;gap:9px}
+.sym{display:grid;gap:5px}
+.sym .nm{font-size:.84rem;font-weight:500}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;background:var(--surface-3);padding:3px;border-radius:var(--r-sm)}
+.seg button{border:0;background:none;border-radius:7px;padding:7px 2px;font-size:.69rem;font-weight:500;cursor:pointer;color:var(--ink-2);min-height:32px}
+.seg button:hover{background:var(--surface)}
+.seg button[data-lv="0"][aria-pressed=true]{background:var(--ink-3);color:var(--surface);font-weight:600}
+.seg button[data-lv="1"][aria-pressed=true]{background:var(--sev-1);color:var(--on-sev-1);font-weight:600}
+.seg button[data-lv="2"][aria-pressed=true]{background:var(--sev-2);color:var(--on-sev);font-weight:600}
+.seg button[data-lv="3"][aria-pressed=true]{background:var(--sev-3);color:var(--on-sev);font-weight:600}
+.save{width:100%;border:0;border-radius:var(--r-sm);background:var(--green);color:#f3f6ef;padding:13px;font-weight:600;font-size:.93rem;cursor:pointer}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .save{background:#2f5134;color:#e8f0e2}}
+:root[data-theme=dark] .save{background:#2f5134;color:#e8f0e2}
+.save:hover{filter:brightness(1.08)}
+.save.done{background:var(--leaf);color:#15200f}
+.scr-note{font-size:.71rem;color:var(--ink-3);text-align:center;font-family:var(--f-mono)}
+.ptabs{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);background:var(--surface)}
+.ptabs button{border:0;background:none;padding:11px 4px 13px;font-size:.73rem;font-weight:500;cursor:pointer;color:var(--ink-3);display:grid;gap:3px;justify-items:center}
+.ptabs button[aria-pressed=true]{color:var(--green);font-weight:600}
+.ptabs .ic{width:16px;height:16px;display:block}
+.hist{display:grid;gap:6px}
+.hrow{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:9px 11px;cursor:pointer;display:grid;gap:5px;text-align:left;width:100%}
+.hrow:hover{border-color:var(--line-2)}
+.hrow .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.hrow .dy{font-size:.82rem;font-weight:600}
+.hrow .fd{font-size:.71rem;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dots{display:flex;gap:3px}
+.dots i{width:100%;height:7px;border-radius:2px;display:block}
+.hdet{display:grid;gap:4px;padding-top:7px;border-top:1px dotted var(--line)}
+.hdet div{display:flex;justify-content:space-between;font-size:.74rem;color:var(--ink-2)}
+.hdet div span:last-child{font-family:var(--f-mono)}
+.msum{display:grid;gap:12px}
+.msum .mbig{background:var(--surface);border-radius:var(--r-sm);padding:13px 14px;display:grid;gap:2px}
+.msum .mbig .k{font-size:.65rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.msum .mbig .v{font-size:1.5rem;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.msum .mbig .d{font-size:.74rem;color:var(--ink-2)}
+.msum p{font-size:.81rem;color:var(--ink-2)}
+.steps{display:grid;gap:14px}
+.step{display:grid;grid-template-columns:30px 1fr;gap:14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.step .sn{width:30px;height:30px;border-radius:9px;background:var(--green-soft);color:var(--green);display:grid;place-items:center;font-family:var(--f-mono);font-size:.82rem;font-weight:500}
+.step h3{margin-bottom:3px}
+.step p{font-size:.9rem;color:var(--ink-2)}
+
+/* workbench */
+.controls{display:grid;gap:14px;margin-bottom:16px}
+.ctrlrow{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.ctrllab{font-size:.68rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);flex:none;width:86px}
+.chipbtn{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 15px;font-size:.84rem;cursor:pointer;color:var(--ink-2)}
+.chipbtn:hover{border-color:var(--line-2);color:var(--ink)}
+.chipbtn[aria-pressed=true]{background:var(--green);border-color:var(--green);color:#f3f6ef;font-weight:600}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .chipbtn[aria-pressed=true]{color:#141a10}}
+:root[data-theme=dark] .chipbtn[aria-pressed=true]{color:#141a10}
+.chartcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:16px;min-width:0}
+.charthead{display:flex;justify-content:space-between;gap:14px;align-items:baseline;flex-wrap:wrap}
+.tiles{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.tile{background:var(--surface-2);border-radius:var(--r-sm);padding:14px 15px;display:grid;gap:3px}
+.tile .k{font-size:.67rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.tile .v{font-size:1.6rem;font-weight:600;line-height:1.1;letter-spacing:-.022em}
+.tile .v .ar{font-size:.92rem;color:var(--ink-3);font-weight:500;padding:0 4px}
+.tile .d{font-size:.76rem;color:var(--ink-2)}
+.scroller{overflow-x:auto;position:relative}
+.scroller svg{display:block}
+.fluid svg{width:100%;height:auto;max-width:100%;display:block}
+#hero-chart svg text{font-size:17px}
+#chart-host.fluid svg{max-width:560px;margin-inline:auto}
+.tip{position:absolute;pointer-events:none;opacity:0;transition:opacity .12s;background:var(--ink);color:var(--bg);border-radius:9px;padding:9px 11px;font-size:.76rem;line-height:1.45;min-width:140px;z-index:6;box-shadow:var(--shadow)}
+.tip b{display:block;font-size:.8rem;margin-bottom:4px}
+.tip .tr{display:flex;justify-content:space-between;gap:14px;font-family:var(--f-mono);font-size:.72rem}
+.legend{display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:.77rem;color:var(--ink-2)}
+.ramp{display:flex;align-items:center;gap:5px}
+.ramp i{width:18px;height:11px;border-radius:2px;display:block}
+.dotkey{width:11px;height:11px;border-radius:50%;display:inline-block;vertical-align:-1px}
+table{border-collapse:collapse;width:100%;font-size:.81rem;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-size:.67rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:600;position:sticky;top:0;background:var(--surface);z-index:1}
+th[data-sort]{cursor:pointer;user-select:none}
+th[data-sort]:hover{color:var(--ink)}
+th .ind{color:var(--green);font-size:.8em;padding-left:3px}
+tbody tr:hover{background:var(--surface-2)}
+.tblwrap{overflow:auto;max-height:360px;border:1px solid var(--line);border-radius:var(--r-sm)}
+.smallmults{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.sm{background:var(--surface-2);border-radius:var(--r-sm);padding:13px 14px;display:grid;gap:7px;min-width:0}
+.sm .nm{font-size:.86rem;font-weight:600}
+.sm .mt{font-family:var(--f-mono);font-size:.76rem;color:var(--ink-2)}
+.sm .fd{font-size:.71rem;color:var(--ink-3);line-height:1.35}
+.notice{background:var(--violet-soft);border-radius:var(--r-sm);padding:12px 15px;font-size:.84rem;color:var(--ink-2)}
+.notice b{color:var(--violet)}
+
+/* outputs */
+.cols3{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(256px,1fr))}
+.out{border-radius:var(--r);padding:22px;display:grid;gap:10px;border:1px solid var(--line);background:var(--surface)}
+.out .for{font-size:.67rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--violet)}
+.out h3{font-family:var(--f-display);font-size:1.18rem;font-weight:600}
+.out ul{padding-left:18px;display:grid;gap:7px;font-size:.88rem;color:var(--ink-2)}
+.papers{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-top:30px}
+.paper{background:var(--paper);border:1px solid var(--line-2);border-radius:var(--r-sm);padding:22px;box-shadow:var(--shadow);display:grid;gap:14px;min-width:0}
+.paper .ph{display:grid;gap:3px;padding-bottom:12px;border-bottom:1.5px solid var(--line)}
+.paper .pk{font-size:.63rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--leaf)}
+.paper .pt{font-family:var(--f-display);font-size:1.3rem;font-weight:600;line-height:1.14}
+.paper .pm{font-family:var(--f-mono);font-size:.72rem;color:var(--ink-3)}
+.paper .lines{display:grid;gap:8px}
+.paper .ln{display:flex;justify-content:space-between;gap:14px;font-size:.83rem;border-bottom:1px dotted var(--line);padding-bottom:6px}
+.paper .ln span:last-child{font-family:var(--f-mono);font-weight:500;text-align:right}
+.paper .say{font-size:.9rem;color:var(--ink-2);display:grid;gap:7px}
+.paper .say b{color:var(--ink)}
+.paper .foot{font-size:.73rem;color:var(--ink-3);border-top:1px solid var(--line);padding-top:11px}
+.notebox{border:1px dashed var(--line-2);border-radius:8px;padding:11px 13px;font-size:.78rem;color:var(--ink-3);min-height:52px}
+.papercap{font-size:.8rem;color:var(--ink-3);margin-top:9px}
+
+/* sizer */
+.sizer{display:grid;gap:26px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+@media (max-width:820px){.sizer{grid-template-columns:minmax(0,1fr)}}
+.sliders{display:grid;gap:20px}
+.slider{display:grid;gap:7px}
+.slider .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.slider .nm{font-size:.9rem;font-weight:500}
+.slider .val{font-family:var(--f-mono);font-size:1.02rem;font-weight:500;color:var(--green)}
+.slider input{width:100%;accent-color:var(--green)}
+.slider .hint{font-size:.78rem;color:var(--ink-3)}
+.outs{display:grid;gap:11px;align-content:start}
+.bigout{background:var(--surface-2);border-radius:var(--r-sm);padding:16px 18px;display:grid;gap:3px}
+.bigout .k{font-size:.67rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.bigout .v{font-size:1.9rem;font-weight:600;line-height:1.08;letter-spacing:-.025em}
+.bigout .d{font-size:.78rem;color:var(--ink-2)}
+
+/* questions */
+details{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-bottom:10px;overflow:hidden}
+details[open]{border-color:var(--line-2)}
+summary{cursor:pointer;padding:17px 20px;font-weight:600;font-size:.98rem;list-style:none;display:flex;gap:14px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";margin-left:auto;font-family:var(--f-mono);font-size:1.25rem;color:var(--green);font-weight:400;line-height:1}
+details[open] summary::after{content:"–"}
+summary:hover{background:var(--surface-2)}
+.dbody{padding:0 20px 19px;display:grid;gap:10px}
+.dbody p,.dbody li{font-size:.9rem;color:var(--ink-2)}
+.dbody ul{padding-left:18px;display:grid;gap:6px}
+.dbody b{color:var(--ink)}
+.flowbox{background:var(--surface-2);border-radius:var(--r-sm);padding:14px 16px;display:grid;gap:8px;font-size:.84rem}
+.fl{display:grid;grid-template-columns:18px 1fr;gap:10px;align-items:start}
+.fl i{font-family:var(--f-mono);font-size:.74rem;color:var(--green);font-style:normal;font-weight:600;padding-top:1px}
+
+.closing{background:var(--deep);color:var(--on-deep)}
+.closing .inner{padding-block:48px;display:grid;gap:18px;justify-items:start}
+.closing h2{font-size:clamp(1.6rem,1.2rem+1.7vw,2.5rem)}
+.closing p{color:var(--on-deep-2);max-width:52ch}
+footer .inner{padding-block:26px 34px;display:grid;gap:8px;border-top:1px solid var(--line)}
+footer p{font-size:.79rem;color:var(--ink-3);max-width:78ch}
+#toast{position:fixed;left:50%;transform:translateX(-50%) translateY(14px);z-index:50;bottom:calc(20px + env(safe-area-inset-bottom,0px));
+  background:var(--ink);color:var(--bg);border-radius:999px;padding:11px 20px;font-size:.86rem;font-weight:500;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;display:flex;gap:12px;align-items:center;max-width:92vw}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+#toast button{background:none;border:0;color:var(--leaf);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+
+/* stat strip */
+.statstrip{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-top:20px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:16px 17px;display:grid;gap:3px;min-width:0}
+.stat .n{font-size:1.75rem;font-weight:600;letter-spacing:-.025em;line-height:1.05;color:var(--green)}
+.stat .l{font-size:.82rem;color:var(--ink-2);line-height:1.4}
+.stat .e{font-size:.7rem;color:var(--ink-3);font-style:italic}
+.statstrip.dark .stat{background:rgba(255,255,255,.055);border-color:rgba(243,246,239,.16)}
+.statstrip.dark .stat .n{color:var(--on-deep)}
+.statstrip.dark .stat .l{color:var(--on-deep-2)}
+
+/* evidence chain */
+.chain{display:grid;gap:12px;counter-reset:ch}
+.link{display:grid;grid-template-columns:34px 1fr;gap:16px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:19px 21px;min-width:0}
+.link .no{width:34px;height:34px;border-radius:10px;background:var(--green-soft);color:var(--green);display:grid;place-items:center;font-family:var(--f-mono);font-size:.84rem;font-weight:600}
+.link h3{margin-bottom:4px}
+.link p{font-size:.9rem;color:var(--ink-2)}
+.link .ev{font-size:.78rem;color:var(--ink-3);margin-top:7px;display:block}
+.link.end{background:var(--deep);border-color:var(--deep);color:var(--on-deep)}
+.link.end .no{background:rgba(243,246,239,.16);color:var(--on-deep)}
+.link.end p{color:var(--on-deep-2)}
+.link.end .ev{color:rgba(243,246,239,.55)}
+
+/* incentive ladder */
+.ladder{display:grid;gap:10px}
+.rung{display:grid;grid-template-columns:30px 1fr auto;gap:15px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:17px 19px;min-width:0}
+@media (max-width:620px){.rung{grid-template-columns:30px 1fr}.rung .badge{grid-column:2}}
+.rung .rn{width:30px;height:30px;border-radius:9px;background:var(--surface-3);color:var(--ink-2);display:grid;place-items:center;font-family:var(--f-mono);font-size:.8rem;font-weight:600}
+.rung.top .rn{background:var(--green-soft);color:var(--green)}
+.rung.risky{border-color:var(--violet);background:var(--violet-soft)}
+.rung h3{font-size:.98rem;margin-bottom:3px}
+.rung p{font-size:.87rem;color:var(--ink-2)}
+.badge{font-size:.67rem;font-weight:600;letter-spacing:.05em;padding:4px 10px;border-radius:999px;white-space:nowrap;flex:none;align-self:center}
+.badge.ok{background:var(--green-soft);color:var(--green)}
+.badge.warn{background:var(--violet);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .badge.warn{color:#17120f}}
+:root[data-theme=dark] .badge.warn{color:#17120f}
+.panel{background:var(--surface-2);border-radius:var(--r);padding:20px 22px;display:grid;gap:11px;margin-top:16px}
+.panel h3{font-size:.98rem}
+.panel p,.panel li{font-size:.88rem;color:var(--ink-2)}
+.panel ul{padding-left:18px;display:grid;gap:7px}
+.panel b{color:var(--ink)}
+
+/* pilot site */
+.sitecard{display:grid;gap:16px;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:start;margin-top:22px}
+@media (max-width:760px){.sitecard{grid-template-columns:minmax(0,1fr)}}
+.sitecard .why{display:grid;gap:10px}
+.sitecard .why div{background:var(--surface-2);border-radius:var(--r-sm);padding:13px 15px}
+.sitecard .why b{font-size:.88rem;display:block;margin-bottom:2px}
+.sitecard .why span{font-size:.82rem;color:var(--ink-2)}
+</style>
+
+<header class="hero">
+  <div class="inner">
+    <div class="brandrow">
+      <span class="mark"><svg viewBox="0 0 15 17" aria-hidden="true"><path d="M7.5 0C4 4.2 1 7.2 1 10.6A6.5 6.5 0 0 0 14 10.6C14 7.2 11 4.2 7.5 0Z" fill="#243d26"/></svg></span>
+      <b>Nuvante · Tolerance Log</b>
+      <span class="hlang" role="group" aria-label="Language / Taal">
+        <button type="button" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-lang="nl" aria-pressed="false">Nederlands</button>
+      </span>
+    </div>
+    <div class="herogrid">
+      <div class="herotext">
+        <h1 data-t="h1">Find the feed<br>that fits.</h1>
+        <p data-t="lede">Tube-fed patients react differently to the same formula. Families record symptoms in under a minute a day, and the dietitian finally sees which feed a patient tolerates — in a form that procurement can read too.</p>
+        <div class="ctas">
+          <a class="btn solid" href="#log" data-t="cta1">Try the daily log</a>
+          <a class="btn wire" href="#data" data-t="cta2">Explore the data</a>
+        </div>
+      </div>
+      <div class="heropanel">
+        <div class="hp-top"><h4 id="hero-who">Sem · 7 years</h4><span class="hp-sub" id="hero-day">day 28 of 28</span></div>
+        <div class="fluid" id="hero-chart"></div>
+        <div class="scrubrow">
+          <input type="range" id="hero-scrub" min="3" max="28" value="28" aria-label="Days of logging shown">
+          <button class="rep" id="hero-replay" type="button" data-t="replay">Replay</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav"><div class="inner">
+  <a href="#problem" data-t="nav1">The problem</a>
+  <a href="#weight" data-t="nav7">Why weight</a>
+  <a href="#log" data-t="nav2">How it works</a>
+  <a href="#data" data-t="nav3">The data</a>
+  <a href="#keep" data-t="nav8">Staying with it</a>
+  <a href="#outputs" data-t="nav4">What comes out</a>
+  <a href="#pilot" data-t="nav5">The pilot</a>
+  <a href="#questions" data-t="nav6">Questions</a>
+</div></nav>
+
+<main>
+
+<section id="problem"><div class="inner">
+  <div class="sechead">
+    <p class="eyebrow" data-t="pr_e">The problem</p>
+    <h2 data-t="pr_h">Symptoms are seen every day and recorded nowhere useful</h2>
+    <p class="sub" data-t="pr_s">From our interviews with Dutch paediatric gastroenterologists and dietitians, and from the procurement research behind them.</p>
+  </div>
+  <div class="probgrid">
+    <div class="prob"><span class="big">2</span><h3 data-t="pr_1h">Two decision-makers, one missing input</h3><p data-t="pr_1p">Dietitians judge effectiveness, procurement judges contracts and price. Neither has comparable tolerance evidence to argue with.</p></div>
+    <div class="prob"><span class="big">5</span><h3 data-t="pr_2h">Five symptoms, five places</h3><p data-t="pr_2p">Nausea, vomiting, reflux, bloating and diarrhoea get noted across different systems and are rarely linked back to the feed that caused them.</p></div>
+    <div class="prob"><span class="big">0</span><h3 data-t="pr_3h">No tool connects them</h3><p data-t="pr_3p">There is no routine way to answer the simplest question a dietitian has: does this patient tolerate this feed better than the last one?</p></div>
+  </div>
+
+  <h3 style="margin-top:34px" data-t="pop_h">The population we are actually reaching</h3>
+  <div class="statstrip">
+    <div class="stat"><span class="n">3,000</span><span class="l" data-t="pop_1">new head and neck cancer diagnoses a year in the Netherlands</span></div>
+    <div class="stat"><span class="n">800–1,000</span><span class="l" data-t="pop_2">of them tube-fed during chemoradiotherapy</span><span class="e" data-t="pop_2e">our estimate; the radiotherapy share is still unverified</span></div>
+    <div class="stat"><span class="n">14</span><span class="l" data-t="pop_3">centres treat almost all of them, so a handful of dietetic teams reaches the whole country</span></div>
+    <div class="stat"><span class="n">~300</span><span class="l" data-t="pop_4">a year at the Antoni van Leeuwenhoek, our proposed first centre</span></div>
+  </div>
+  <p class="sub" style="margin-top:16px" data-t="pop_n">This is an evidence play, not a volume play. The group is small enough to study properly and concentrated enough to reach.</p>
+
+  <div class="quote">
+    <q data-t="q1">There is not one brand that we are always using … it's really patient dependent.</q>
+    <cite data-t="c1">Gastroenterologist, Amsterdam UMC · team interview, 2026</cite>
+  </div>
+  <div class="quote">
+    <q data-t="q2">It would be valuable to have more data on which patients need tube feeding because they are malnourished.</q>
+    <cite data-t="c2">Dietitian, UMCG · team interview, 2026</cite>
+  </div>
+</div></section>
+
+<section id="weight"><div class="inner">
+  <div class="sechead">
+    <p class="eyebrow" data-t="wt_e">Why weight</p>
+    <h2 data-t="wt_h">The number everyone already acts on, and almost nobody records</h2>
+    <p class="sub" data-t="wt_s">Tolerance is the mechanism. Weight is the outcome. The log is the first thing that holds both at once, which is why weight belongs in it.</p>
+  </div>
+  <div class="chain">
+    <div class="link"><span class="no">01</span><div><h3 data-t="wt_1h">It starts before treatment does</h3><p data-t="wt_1p">One in five head and neck patients already has critical weight loss at diagnosis, and in tumours of the lower throat it is more than four in ten. Over half of patients without metastases have lost weight by their first oncology visit.</p><span class="ev" data-t="wt_1e">Jager-Wittenaar et al. 2007 (UMCG, 407 patients); Muscaritoli et al. 2017 (PreMiO)</span></div></div>
+    <div class="link"><span class="no">02</span><div><h3 data-t="wt_2h">Treatment makes it worse</h3><p data-t="wt_2p">Up to 88% of head and neck patients can become malnourished during chemoradiation. Across cancer patients, 20 to 30% may die from the consequences of malnutrition rather than from the cancer.</p><span class="ev" data-t="wt_2e">Löser et al. 2024 (SUFEETUBE); Caccialanza et al. 2020</span></div></div>
+    <div class="link"><span class="no">03</span><div><h3 data-t="wt_3h">Weight loss changes the treatment</h3><p data-t="wt_3p">Patients who lose weight are 1.3 to 1.7 times more likely to have their systemic treatment modified. That is the moment nutrition stops being supportive care and starts affecting the chance of cure.</p><span class="ev" data-t="wt_3e">Shaw et al. 2020</span></div></div>
+    <div class="link"><span class="no">04</span><div><h3 data-t="wt_4h">Feeding early protects both</h3><p data-t="wt_4p">Head and neck patients who started tube feeding before treatment lost 2.4% of their weight against 15.2% without a tube, and completed 96% of their chemotherapy against 81.7%. Fewer emergency visits too.</p><span class="ev" data-t="wt_4e">Lewis et al. 2014</span></div></div>
+    <div class="link"><span class="no">05</span><div><h3 data-t="wt_5h">But only if the feed is tolerated</h3><p data-t="wt_5p">Around 40% of tube-fed cancer patients still do not reach their protein and energy targets, and 30.5% of tube-fed intensive care patients develop feed intolerance. A feed that is prescribed is not yet a feed that is delivered.</p><span class="ev" data-t="wt_5e">De Souza et al. 2018; critical care cohort on enteral feed intolerance</span></div></div>
+    <div class="link end"><span class="no">06</span><div><h3 data-t="wt_6h">And almost nobody measures it</h3><p data-t="wt_6p">77% of German head and neck physicians do not screen nutrition routinely before chemoradiation. The chain above is well evidenced and barely instrumented. A weekly weight and a daily symptom score close that gap at almost no cost.</p><span class="ev" data-t="wt_6e">Löser et al. 2024</span></div></div>
+  </div>
+  <div class="panel">
+    <h3 data-t="wt_lh">One thing we deliberately left out</h3>
+    <p data-t="wt_lp">Dietitians watch for a 5% loss, because that is where malnutrition criteria start. We considered drawing that line on the weight chart and decided not to. A threshold is a comparison against a norm, and that is one of the four things that would turn this record into regulated clinical software. The chart shows the weight and the percentage change; the dietitian knows where the line sits.</p>
+  </div>
+</div></section>
+
+<section id="log"><div class="inner">
+  <div class="sechead">
+    <p class="eyebrow" data-t="lg_e">How it works</p>
+    <h2 data-t="lg_h">One minute a day, at the kitchen table</h2>
+    <p class="sub" data-t="lg_s">A working prototype. Log a day, then open History and Summary at the bottom to see what the family gets back.</p>
+  </div>
+  <div class="howgrid">
+    <div class="phonecol">
+      <div class="phone">
+        <div class="screen">
+          <div class="scr-top">
+            <span><span class="who" id="ph-who"></span><span class="when" id="ph-when"></span></span>
+            <span class="streak" id="ph-streak"></span>
+          </div>
+          <div class="scr-body" id="ph-body"></div>
+          <div class="ptabs" role="group" aria-label="App screens">
+            <button type="button" data-pt="today" aria-pressed="true">
+              <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="3" width="11" height="11" rx="2"/><path d="M5.5 1.5v3M10.5 1.5v3M2.5 7h11"/></svg>
+              <span id="pt-l1">Today</span></button>
+            <button type="button" data-pt="history" aria-pressed="false">
+              <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.6"/></svg>
+              <span id="pt-l2">History</span></button>
+            <button type="button" data-pt="summary" aria-pressed="false">
+              <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 13V8M8 13V3.5M13 13V6.5"/></svg>
+              <span id="pt-l3">Summary</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="sn">01</span><div><h3 data-t="st1h">The family logs, not the dietitian</h3><p data-t="st1p">She is the bottleneck the tool exists to relieve, so it never adds to her day. A parent is already watching for these symptoms and already keeping notes.</p></div></div>
+      <div class="step"><span class="sn">02</span><div><h3 data-t="st2h">Every brand on the Dutch market is in the list</h3><p data-t="st2p">Nutrison, Nutrini and NutriniMax from Nutricia; Isosource and Compleat from Nestlé Health Science; Fresubin and NutriChef from Fresenius Kabi; the HiPP range; and Nuvacal. A log that only records one manufacturer's feed is a marketing device. One that records them all is a clinical instrument, and only the second convinces a procurement team.</p></div></div>
+      <div class="step"><span class="sn">03</span><div><h3 data-t="st3h">No name ever enters the log</h3><p data-t="st3p">The family opens it from a link tied to a code the hospital issued. The list that connects that code to a patient stays inside the hospital, and a supplier never holds it.</p></div></div>
+      <div class="step"><span class="sn">04</span><div><h3 data-t="st4h">It records, it does not advise</h3><p data-t="st4p">No alerts, no risk scores, no suggested feed. That restraint is what keeps it a record rather than clinical software, and it is a deliberate design choice rather than a missing feature.</p></div></div>
+      <div class="step"><span class="sn">05</span><div><h3 data-t="st5h">Paper works too</h3><p data-t="st5p">The asset is the standard way of recording, not the software. A printed card and a monthly summary prove the same thing at a fraction of the cost, which is what a first pilot can actually run.</p></div></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="data"><div class="inner">
+  <div class="sechead">
+    <p class="eyebrow" data-t="dt_e">The data</p>
+    <h2 data-t="dt_h">The pattern a dietitian cannot see today</h2>
+    <p class="sub" data-t="dt_s">Pick a patient and a view. Hover the charts or focus one and use the arrow keys; sort the table by any column.</p>
+  </div>
+
+  <div class="controls">
+    <div class="ctrlrow"><span class="ctrllab" data-t="l_pat">Patient</span><span id="pchips" style="display:flex;gap:8px;flex-wrap:wrap"></span></div>
+    <div class="ctrlrow"><span class="ctrllab" data-t="l_view">View</span><span id="mchips" style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="chipbtn" type="button" data-m="score" aria-pressed="true" data-t="m_score">Daily total</button>
+      <button class="chipbtn" type="button" data-m="volume" aria-pressed="false" data-t="m_vol">Volume delivered</button>
+      <button class="chipbtn" type="button" data-m="weight" aria-pressed="false" data-t="m_wt">Weight</button>
+      <button class="chipbtn" type="button" data-m="mix" aria-pressed="false" data-t="m_mix">Symptom breakdown</button>
+      <button class="chipbtn" type="button" data-m="change" aria-pressed="false" data-t="m_chg">Which symptoms changed</button>
+    </span></div>
+  </div>
+
+  <div class="chartcard">
+    <div class="charthead"><div><h3 id="d-title"></h3><p style="font-size:.83rem;color:var(--ink-3)" id="d-sub"></p></div></div>
+    <div class="tiles" id="d-tiles"></div>
+    <div id="chart-host"></div>
+    <div class="legend" id="d-legend"></div>
+  </div>
+
+  <div style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-top:16px">
+    <div class="chartcard">
+      <div><h3 data-t="sc_h">Does intolerance cost nutrition?</h3>
+        <p style="font-size:.83rem;color:var(--ink-3)" data-t="sc_p">Each dot is one day: symptom score against the share of the planned volume that actually went in.</p></div>
+      <div class="fluid" id="scatter"></div>
+      <div class="legend" id="scatter-legend"></div>
+      <p style="font-size:.8rem;color:var(--ink-2)" data-t="sc_n">If the relationship holds in real data, a tolerance problem is also a nutrition problem — and that is the version of the argument procurement can put a number on. The pilot is designed to test it, not to assume it.</p>
+    </div>
+    <div class="chartcard">
+      <div><h3 data-t="sm_h">The whole caseload at once</h3>
+        <p style="font-size:.83rem;color:var(--ink-3)" data-t="sm_p">Four patients, same scale, feed change marked.</p></div>
+      <div class="smallmults" id="smallmults"></div>
+      <p style="font-size:.8rem;color:var(--ink-2)" data-t="sm_n">Two of the four did not improve. A log that only produced success stories would be worth nothing to a dietitian, and a procurement team would say so within a minute.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:22px;display:grid;gap:12px">
+    <div class="charthead">
+      <h3 data-t="tb_h">Every logged day</h3>
+      <span id="tblfilters" style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="chipbtn" type="button" data-f="all" aria-pressed="true" data-t="f_all">All days</button>
+        <button class="chipbtn" type="button" data-f="a" aria-pressed="false" data-t="f_a">Before the change</button>
+        <button class="chipbtn" type="button" data-f="b" aria-pressed="false" data-t="f_b">After the change</button>
+        <button class="chipbtn" type="button" data-f="bad" aria-pressed="false" data-t="f_bad">Score 6 or more</button>
+      </span>
+    </div>
+    <div class="tblwrap" id="tbl"></div>
+    <p style="font-size:.78rem;color:var(--ink-3)" id="tblcount"></p>
+  </div>
+
+  <div style="margin-top:46px">
+    <div class="sechead">
+      <p class="eyebrow" data-t="ag_e">The aggregate</p>
+      <h2 data-t="ag_h">What it looks like across the whole Dutch market</h2>
+      <p class="sub" data-t="ag_s">Nineteen complete tube feeds available in the Netherlands, modelled side by side. Drag the slider to see how many patients it would take before any of them separate from the others.</p>
+    </div>
+    <div class="chartcard">
+      <div class="notice" data-t="ag_n"><b>Every number in this chart is a placeholder.</b> No comparative tolerance data exists for these products — that is the gap the pilot is meant to fill. What is real here is the arithmetic: how a confidence interval narrows as the number of patients grows. Do not quote the estimates.</div>
+      <div class="ctrlrow"><span class="ctrllab" data-t="l_grp">Group</span><span id="catchips" style="display:flex;gap:8px;flex-wrap:wrap"></span></div>
+      <div class="slider">
+        <div class="top"><span class="nm" data-t="ag_sl">Patients per product</span><span class="val" id="v-n">24</span></div>
+        <input type="range" id="s-n" min="5" max="300" value="24" aria-label="Patients per product">
+        <span class="hint" data-t="ag_hint">Assumes a standard deviation of 2.5 points on the daily symptom score, and a 95% interval around each mean.</span>
+      </div>
+      <div class="scroller" id="agg"></div>
+      <div class="legend" id="agg-legend"></div>
+      <p id="agg-read" style="font-size:.9rem;color:var(--ink-2)"></p>
+      <p style="font-size:.86rem;color:var(--ink-2);border-top:1px solid var(--line);padding-top:14px" data-t="ag_c">
+        <b style="color:var(--ink)">This is the argument for the whole design.</b> Comparing nineteen products against each other needs hundreds of patients per product, which nobody is going to fund. Comparing one patient against themselves before and after a feed change needs a few dozen, because each patient is their own control. That is why the pilot measures switches, not brands.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="keep"><div class="inner">
+  <div class="sechead">
+    <p class="eyebrow" data-t="kp_e">Staying with it</p>
+    <h2 data-t="kp_h">Apps in healthcare die from abandonment, not rejection</h2>
+    <p class="sub" data-t="kp_s">Seven weeks of chemoradiation is a long time to ask anything of someone whose mouth hurts. These are the levers we would rely on, strongest first. The cheapest ones are also the best ones.</p>
+  </div>
+  <div class="ladder">
+    <div class="rung top"><span class="rn">01</span><div><h3 data-t="kp_1h">Twenty seconds a day</h3><p data-t="kp_1p">Dull, and the single biggest lever there is. Every extra field costs adherence. In a population with mucositis and fatigue this outranks every clever mechanic, which is why the daily entry is five taps and two sliders.</p></div><span class="badge ok" data-t="b_ok">No approval needed</span></div>
+    <div class="rung top"><span class="rn">02</span><div><h3 data-t="kp_2h">Your dietitian sees this on Thursday</h3><p data-t="kp_2p">Accountability inside a real clinical relationship beats any points system. These patients are in clinic every week during treatment, so the summary lands the evening before the appointment and gets opened in front of them.</p></div><span class="badge ok" data-t="b_ok">No approval needed</span></div>
+    <div class="rung top"><span class="rn">03</span><div><h3 data-t="kp_3h">Your seven weeks become the evidence for the next patient</h3><p data-t="kp_3p">Cancer patients consistently say they want their experience to count for something. Here it is literally true: this group is small, and a few dozen complete records are the difference between an opinion and a finding.</p></div><span class="badge ok" data-t="b_ok">No approval needed</span></div>
+    <div class="rung"><span class="rn">04</span><div><h3 data-t="kp_4h">Week 4 of 7, not a streak</h3><p data-t="kp_4p">Progress that maps onto the treatment they want to finish. A brittle streak does the opposite: break it on a bad day and people quit, and here a bad day is a symptom of a serious illness. Nothing in the app ever scolds.</p></div><span class="badge ok" data-t="b_ok">No approval needed</span></div>
+    <div class="rung"><span class="rn">05</span><div><h3 data-t="kp_5h">The data itself as the reward</h3><p data-t="kp_5p">After two weeks there is enough to show someone their own pattern. Self-knowledge is the most durable motivator there is, and it costs nothing to give away.</p></div><span class="badge ok" data-t="b_ok">No approval needed</span></div>
+    <div class="rung"><span class="rn">06</span><div><h3 data-t="kp_6h">A reminder at a time they choose</h3><p data-t="kp_6p">Unglamorous and very effective. Chosen by the patient, not set by us, and silenceable without guilt.</p></div><span class="badge ok" data-t="b_ok">No approval needed</span></div>
+    <div class="rung risky"><span class="rn">07</span><div><h3 data-t="kp_7h">A prize draw</h3><p data-t="kp_7p">Worth doing, but last on this list rather than first. Extrinsic rewards work in the short term and can crowd out the intrinsic ones above. It is also the only item here that needs sign-off before it can run.</p></div><span class="badge warn" data-t="b_warn">Legal and ethics review</span></div>
+  </div>
+
+  <div class="panel">
+    <h3 data-t="kp_rh">Four things to settle before the draw runs</h3>
+    <ul>
+      <li data-t="kp_r1"><b>It can reward quantity over accuracy.</b> Count only complete daily entries, one per day, and timestamp them so back-filled days are visible.</li>
+      <li data-t="kp_r2"><b>A manufacturer-funded prize looks like marketing.</b> Run the draw through the hospital or an independent party, and keep the log feed-agnostic so entries are never tied to using a Nuvacal product.</li>
+      <li data-t="kp_r3"><b>Promotional prize draws are regulated in the Netherlands,</b> and so is the promotion of medical nutrition. Both need a legal check before launch.</li>
+      <li data-t="kp_r4"><b>Odds that rise with entries is the shape an ethics committee questions.</b> Compensation should cover time and burden rather than induce participation, and this group is vulnerable. A flat thank-you for everyone who completes, or a donation per completed week to a patient fund, achieves most of the effect without the objection.</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h3 data-t="kp_th">Better still: test the incentive instead of assuming it</h3>
+    <p data-t="kp_tp">Randomise half the patients to the draw and measure days logged in each arm. You come out with two findings instead of one: the tolerance data, and a real answer to what keeps patients logging during chemoradiation. The second is publishable, useful to the field, and it neutralises the marketing objection, because you are studying the incentive rather than deploying it.</p>
+    <p data-t="kp_tq"><b>And treat silence as data.</b> Someone who stops logging may simply be very unwell, which is worth knowing. The dietitian's page shows when a patient last logged — a statement of fact, not an alert, which keeps it on the right side of the line described below.</p>
+  </div>
+</div></section>
+
+<section id="outputs"><div class="inner">
+  <div class="sechead">
+    <p class="eyebrow" data-t="op_e">What comes out</p>
+    <h2 data-t="op_h">Three audiences, one dataset</h2>
+    <p class="sub" data-t="op_s">The same daily records answer a different question for each of the people who decide whether a feed stays in the hospital.</p>
+  </div>
+  <div class="cols3">
+    <div class="out"><span class="for" data-t="o1f">For the patient</span><h3 data-t="o1h">Something back for the effort</h3>
+      <ul data-t="o1l"><li>A weekly summary in plain language</li><li>Something to bring to Thursday's appointment</li><li>A reason to still be logging in week five</li></ul></div>
+    <div class="out"><span class="for" data-t="o2f">For the dietitian</span><h3 data-t="o2h">Proof for what she already suspects</h3>
+      <ul data-t="o2l"><li>Tolerance and weight per patient, on one page</li><li>A record for the multidisciplinary meeting</li><li>Less guessing when a feed has to change</li></ul></div>
+    <div class="out"><span class="for" data-t="o3f">For procurement</span><h3 data-t="o3h">A number other than price</h3>
+      <ul data-t="o3l"><li>Symptom-days per patient-month</li><li>Share of planned volume actually delivered</li><li>Weight held, interruptions avoided</li></ul></div>
+  </div>
+
+  <h3 style="margin-top:34px" data-t="mo_h">What it is worth, in euros</h3>
+  <div class="statstrip">
+    <div class="stat"><span class="n">€2.3 bn</span><span class="l" data-t="mo_1">a year: the cost of untreated malnutrition in Dutch care, including lost work and quality of life (€356m direct)</span></div>
+    <div class="stat"><span class="n">€3.31</span><span class="l" data-t="mo_2">returned for every €1 spent treating malnutrition in hospitals</span></div>
+    <div class="stat"><span class="n">+€814</span><span class="l" data-t="mo_3">and 1.4 extra days in hospital, per malnourished patient</span></div>
+    <div class="stat"><span class="n">82%</span><span class="l" data-t="mo_4">of emergency visits by head and neck patients during and after chemoradiation were nutrition-related</span></div>
+  </div>
+  <p class="sub" style="margin-top:14px" data-t="mo_n">Figures from a 2024 Dutch health-economic analysis (Nuijten, A2M) and Lewis et al. 2014. Price per bottle is the wrong measure; this is the one procurement can act on.</p>
+
+  <div class="papers">
+    <div>
+      <div class="paper">
+        <div class="ph"><span class="pk" data-t="pa_k">For the family · monthly</span><span class="pt" data-t="pa_t">Sem, October</span><span class="pm" data-t="pa_m">28 of 31 days logged</span></div>
+        <div class="fluid" id="paper-spark"></div>
+        <div class="say" data-t="pa_s">
+          <p><b>Most days this month scored 2 or lower.</b> In September, most days were above 6.</p>
+          <p><b>One day with vomiting,</b> compared with eight the month before.</p>
+          <p><b>Sem took 94% of the planned volume,</b> up from 80%.</p>
+        </div>
+        <p class="foot" data-t="pa_f">Bring this to the next appointment. It is a record of what you saw, not advice — your dietitian decides what it means.</p>
+      </div>
+      <p class="papercap" data-t="pa_c">What a parent receives. Without this, logging is unpaid work and stops by week three.</p>
+    </div>
+    <div>
+      <div class="paper">
+        <div class="ph"><span class="pk" data-t="pb_k">For the dietitian · per patient</span><span class="pt" data-t="pb_t">Tolerance summary</span><span class="pm" data-t="pb_m">Code NL-0442 · 7 yrs · 1–28 Oct · no name held</span></div>
+        <div class="lines" data-t="pb_l">
+          <div class="ln"><span>Feed, days 1–14</span><span>NutriniMax Multi Fibre</span></div>
+          <div class="ln"><span>Feed, days 15–28</span><span>Nuvacal 1.3 Plant-Based<br>Fiber Vegan</span></div>
+          <div class="ln"><span>Mean symptom score</span><span>8.2 → 3.1</span></div>
+          <div class="ln"><span>Planned volume given</span><span>80% → 94%</span></div>
+          <div class="ln"><span>Days with vomiting</span><span>8 → 1</span></div>
+          <div class="ln"><span>Days logged</span><span>28 of 28</span></div>
+        </div>
+        <div class="fluid" id="paper-heat"></div>
+        <div class="notebox" data-t="pb_n">Dietitian's note and plan</div>
+        <p class="foot" data-t="pb_f">Generated from the family's entries. No interpretation, no recommendation — the clinical judgement is hers.</p>
+      </div>
+      <p class="papercap" data-t="pb_c">What the dietitian receives. It replaces a note she writes by hand rather than adding to her day.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="pilot"><div class="inner">
+  <div class="sechead">
+    <p class="eyebrow" data-t="pl_e">Size a pilot</p>
+    <h2 data-t="pl_h">What one centre would actually produce</h2>
+    <p class="sub" data-t="pl_s">Move the sliders to your own assumptions. These are counts, not predictions — the tool makes no claim about what the data will show.</p>
+  </div>
+  <div class="card sizer">
+    <div class="sliders">
+      <div class="slider"><div class="top"><span class="nm" data-t="pl_1">Patients enrolled</span><span class="val" id="v-pat">40</span></div>
+        <input type="range" id="s-pat" min="10" max="120" value="40" aria-label="Patients enrolled"><span class="hint" data-t="pl_1h">The AVL sees around 300 a year, so 30 to 50 is a realistic first cohort.</span></div>
+      <div class="slider"><div class="top"><span class="nm" data-t="pl_2">Length of the pilot</span><span class="val" id="v-wk">12 weeks</span></div>
+        <input type="range" id="s-wk" min="7" max="26" value="12" aria-label="Length of the pilot in weeks"><span class="hint" data-t="pl_2h">Seven weeks of chemoradiation plus recovery. Weight keeps moving after treatment ends.</span></div>
+      <div class="slider"><div class="top"><span class="nm" data-t="pl_3">Share who change feed during it</span><span class="val" id="v-sh">35%</span></div>
+        <input type="range" id="s-sh" min="5" max="90" value="35" aria-label="Share of patients who change feed"><span class="hint" data-t="pl_3h">Your assumption, not ours. It decides how many before-and-after comparisons you end up with.</span></div>
+    </div>
+    <div class="outs">
+      <div class="bigout"><span class="k" data-t="pl_o1">Patient-days logged</span><span class="v" id="o-days">2,016</span><span class="d" data-t="pl_o1d">Each one a feed, a volume and five symptom scores</span></div>
+      <div class="bigout"><span class="k" data-t="pl_o2">Symptom observations</span><span class="v" id="o-obs">10,080</span><span class="d" data-t="pl_o2d">Five per day, comparable across patients</span></div>
+      <div class="bigout"><span class="k" data-t="pl_o3">Before-and-after cases</span><span class="v" id="o-cases">14</span><span class="d" data-t="pl_o3d">Patients with a feed change inside the window</span></div>
+      <div class="bigout"><span class="k" data-t="pl_o4">Weights recorded</span><span class="v" id="o-wt">480</span><span class="d" data-t="pl_o4d">One a week per patient, the outcome the oncology team reads</span></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:34px" data-t="av_h">Why the Antoni van Leeuwenhoek first</h3>
+  <div class="sitecard">
+    <div>
+      <p class="sub" data-t="av_p">The AVL is the Netherlands' dedicated cancer hospital and one of its eight head and neck oncology centres. Around 905 newly diagnosed patients a year there face serious tube-feeding needs: over 600 with head and neck cancer, 186 with oesophageal and 119 with stomach cancer. It already states that cancer care is about more than survival numbers, and it backs that with a Centre for Quality of Life bringing together 14 clinical disciplines, oncology dietitians and speech therapists among them.</p>
+      <p class="sub" style="margin-top:12px" data-t="av_p2">A focused hospital that already measures quality of life is more likely to buy on outcome than a large network buying on volume. The entry point is the dietitian, not the patient: she hands out access when tube feeding starts.</p>
+    </div>
+    <div class="why">
+      <div><b data-t="av_1b">Ready for value-based procurement</b><span data-t="av_1s">Quality of life is a strategic goal with its own department, so outcomes rather than unit price can drive the choice.</span></div>
+      <div><b data-t="av_2b">The right team in one place</b><span data-t="av_2s">Dietitians, speech therapists and psychologists already work side by side — natural users of one shared record.</span></div>
+      <div><b data-t="av_3b">A fit for the product</b><span data-t="av_3s">An energy- and protein-dense feed plus tolerance data gives the centre evidence it wants to collect anyway.</span></div>
+      <div><b data-t="av_4b">Then the network</b><span data-t="av_4s">After one documented pilot, the head and neck dietetic network reaches the other 13 centres. Belgium is the logical next country; Germany after that.</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="questions"><div class="inner">
+  <div class="sechead">
+    <p class="eyebrow" data-t="qu_e">Questions</p>
+    <h2 data-t="qu_h">Four things that have to be true first</h2>
+    <p class="sub" data-t="qu_s">A supplier collecting evidence on its own product is the obvious objection, and the honest answer is to design it out before anyone raises it.</p>
+  </div>
+
+  <details open><summary data-t="d1s">Who can see the data?</summary><div class="dbody" data-t="d1b">
+    <p>No name, address or date of birth ever enters the log. The hospital issues each patient a code, the family logs against that code, and the list that connects the two stays in the hospital's own system. A supplier never receives it and so cannot work back to a person.</p>
+    <div class="flowbox">
+      <div class="fl"><i>01</i><span>The hospital issues a code, for example <b>NL-0442</b>, and keeps the only list that links it to a patient.</span></div>
+      <div class="fl"><i>02</i><span>The family logs symptoms, volume and feed against that code. No identifying field exists in the form.</span></div>
+      <div class="fl"><i>03</i><span>The dietitian sees her own patients because she has access to that list; nobody outside the hospital does.</span></div>
+      <div class="fl"><i>04</i><span>What leaves the hospital is coded or counted — group totals, not rows that belong to a person.</span></div>
+    </div>
+    <p><b>Call it pseudonymised, not anonymous.</b> Under the GDPR, coded data is still personal data as long as a key exists somewhere, and with a few dozen children in one centre a date and a condition can narrow things down fast. Claiming full anonymity would not survive a conversation with a hospital privacy officer, and the design does not need it to: the point is that the key never leaves the hospital.</p>
+    <p>Independence matters for the same reason. Four insurers stopped reimbursing a medical nutrition product in 2013 after questions about sponsor-funded evidence, and a log run by a manufacturer invites exactly that. So the analysis plan is fixed before the pilot starts and <b>publication is agreed in writing regardless of the result</b> — including a result where a Nuvacal product performs no better.</p>
+  </div></details>
+
+  <details><summary data-t="d2s">Why isn't this a medical device?</summary><div class="dbody" data-t="d2b">
+    <p>Software is only a medical device if it has a medical purpose of its own. European guidance on qualifying software (MDCG 2019-11) draws the line at whether the software <b>acts on the data</b>: a product that stores, displays, communicates or searches what someone entered is not a device, while one that interprets it for a clinical decision usually is.</p>
+    <p>This version sits firmly on the first side, and the things it deliberately does not do are what keep it there:</p>
+    <ul>
+      <li><b>No risk score.</b> It adds up the five numbers the family typed. Arithmetic on the user's own entries is not interpretation.</li>
+      <li><b>No thresholds or alerts.</b> Nothing turns red, nothing notifies anyone, nothing says a value is too high.</li>
+      <li><b>No comparison against a norm.</b> It never tells you whether a score is normal for a seven-year-old.</li>
+      <li><b>No recommendation or prediction.</b> It never suggests a feed, never ranks one above another, never forecasts anything.</li>
+    </ul>
+    <p>What remains is a diary with a chart on top. The dietitian supplies every clinical judgement; the tool supplies the record she is judging. Add any one of the four above and this stops being true — software meant to inform a treatment decision falls under Rule 11 and is normally Class IIa or higher, which is a different project with a different budget.</p>
+    <p><b>One caution.</b> Intended purpose is set by what the maker claims, not only by what the code does. A marketing line promising to find the right feed could create a medical purpose on its own, so the wording on a real product page needs the same review as the software. The headline on this concept page is exactly the kind of claim a specialist should look at.</p>
+  </div></details>
+
+  <details><summary data-t="d5s">Does this need ethics approval?</summary><div class="dbody" data-t="d5b">
+    <p>The hospital decides, and that conversation has to happen before anyone is enrolled.</p>
+    <p>A project that collects routine care data to improve care is often <b>non-WMO</b> — outside the Dutch Medical Research Involving Human Subjects Act — because patients are not subjected to an intervention or made to follow imposed behaviour. The feed is chosen by the dietitian exactly as it would be anyway; the log records what happened.</p>
+    <p><b>Two things would change that answer.</b> Requiring patients to log as a study procedure starts to look like imposed behaviour. And adding an incentive, particularly a randomised one, makes the project a study of behaviour rather than a record of care. If the prize draw goes ahead in the form described above, assume the question has to be asked again.</p>
+    <p>So the sequence is: ask the AVL's research office or METC for a non-WMO declaration first, agree the data-processing arrangement with the hospital as controller, and only then design the incentive. Doing it the other way round costs months.</p>
+  </div></details>
+
+  <details><summary data-t="d3s">Why would anyone still be using it in week three?</summary><div class="dbody" data-t="d3b">
+    <p>Apps in healthcare die from abandonment, not rejection. The design answer is that it has to give something back rather than only take.</p>
+    <ul>
+      <li>The family gets a monthly summary they can bring to the appointment, so the logging has a visible point.</li>
+      <li>The dietitian's page replaces notes she already writes by hand, so her day gets shorter rather than longer.</li>
+      <li>Days-logged-per-patient is a reported outcome of the pilot, not an afterthought. If people stop, that is the finding.</li>
+    </ul>
+  </div></details>
+
+  <details><summary data-t="d4s">What would it show if the feed made no difference?</summary><div class="dbody" data-t="d4b">
+    <p>Exactly that, and visibly. In the data section above, open <b>Noor</b>: she moved to a Nuvacal product and her symptoms did not improve. <b>Fleur</b> changed within the same product family and nothing shifted either.</p>
+    <p>Two of the four example patients show no benefit, and that is deliberate. A log that only ever produced good news would be worth nothing to a dietitian, and a procurement team would see through it immediately. Leaving the failures in is what makes the rest of it readable.</p>
+  </div></details>
+</div></section>
+
+</main>
+
+<section class="closing"><div class="inner">
+  <h2 data-t="cl_h">Start with one centre, one patient group, one question.</h2>
+  <p data-t="cl_p">Does this patient tolerate this feed better than the last one? Answer it a few hundred times and you have the evidence the market is missing.</p>
+  <a class="btn solid" href="#log" data-t="cta1">Try the daily log</a>
+</div></section>
+
+<footer><div class="inner">
+  <p data-t="ft1"><b>Example data only.</b> Every patient, symptom score and modelled estimate on this page is invented for the concept and must not be presented as a result. Product names, manufacturers and energy densities are taken from the manufacturers' published Dutch product information; no tolerance claim is made about any of them.</p>
+  <p data-t="ft2">A student concept for the UMIO Innovation Challenge · Maastricht University · Pillar 3 of the Nuvante storyboard. Not a Nuvante product, not medical advice, and not a regulatory or legal opinion.</p>
+</div></footer>
+
+<div id="toast"><span id="toast-msg"></span><button type="button" id="toast-go">See the chart</button></div>
+
+<script>
+"use strict";
+const d=(a,b,c,e,f,v)=>({s:[a,b,c,e,f],v});
+
+/* Adult tube feeds on the Dutch market. Energy densities as published by the
+   manufacturers; "cat" is a plain descriptive grouping, not a clinical judgement. */
+const FEEDS=[
+ {m:"Nuvante",n:"Nuvacal 1.3 Plant-Based Fiber Vegan",s:"Nuvacal 1.3",k:1.28,cat:"plant",est:4.9,nuv:1},
+ {m:"Nuvante",n:"Nuvacal 1.6 Energy Protein Fiber",s:"Nuvacal 1.6",k:1.58,cat:"energy",est:5.6,nuv:1},
+ {m:"Nutricia",n:"Nutrison Multi Fibre",s:"Nutrison Multi Fibre",k:1.0,cat:"standard",est:5.8},
+ {m:"Nutricia",n:"Nutrison Energy Multi Fibre",s:"Nutrison Energy MF",k:1.5,cat:"energy",est:6.4},
+ {m:"Nutricia",n:"Nutrison Protein Plus Multi Fibre",s:"Nutrison Protein Plus MF",k:1.25,cat:"protein",est:6.2},
+ {m:"Nutricia",n:"Nutrison Protein Plus Energy Multi Fibre",s:"Nutrison Prot Plus Energy MF",k:1.5,cat:"protein",est:6.0},
+ {m:"Nutricia",n:"Nutrison PlantBased Soya Multi Fibre",s:"Nutrison PlantBased Soya",k:1.03,cat:"plant",est:5.2},
+ {m:"Nestlé Health Science",n:"Isosource Standard Fibre",s:"Isosource Standard Fibre",k:1.0,cat:"standard",est:6.1},
+ {m:"Nestlé Health Science",n:"Isosource Protein Fibre",s:"Isosource Protein Fibre",k:1.3,cat:"protein",est:5.9},
+ {m:"Nestlé Health Science",n:"Isosource Energy Fibre",s:"Isosource Energy Fibre",k:1.6,cat:"energy",est:6.0},
+ {m:"Nestlé Health Science",n:"Isosource Soy Energy Fibre",s:"Isosource Soy Energy Fibre",k:1.5,cat:"plant",est:5.4},
+ {m:"Nestlé Health Science",n:"Compleat Nature Mix 1.1",s:"Compleat Nature Mix 1.1",k:1.1,cat:"food",est:4.6},
+ {m:"Nestlé Health Science",n:"Compleat Nature Mix 1.5 Protein",s:"Compleat Nature Mix 1.5",k:1.5,cat:"food",est:4.9},
+ {m:"Nestlé Health Science",n:"Compleat Plant Protein 1.6",s:"Compleat Plant Protein",k:1.6,cat:"plant",est:5.0},
+ {m:"Fresenius Kabi",n:"Fresubin Original Fibre",s:"Fresubin Original Fibre",k:1.0,cat:"standard",est:5.9},
+ {m:"Fresenius Kabi",n:"Fresubin Energy Fibre",s:"Fresubin Energy Fibre",k:1.5,cat:"energy",est:6.2},
+ {m:"Fresenius Kabi",n:"Fresubin HP Energy Fibre",s:"Fresubin HP Energy Fibre",k:1.5,cat:"protein",est:6.1},
+ {m:"Fresenius Kabi",n:"Fresubin Plant-Based Tube Feed",s:"Fresubin Plant-Based",k:1.5,cat:"plant",est:5.5},
+ {m:"Fresenius Kabi",n:"NutriChef Groenten",s:"NutriChef Groenten",k:1.52,cat:"food",est:4.8}
+];
+const AGG=FEEDS.filter(f=>f.est!=null);
+const short=n=>{const f=FEEDS.find(x=>x.n===n);return f?f.s:n;};
+
+/* 49 days = the seven weeks of chemoradiation. Feed changes at the start of week 4.
+   Day records are generated from a fixed seed so the page is identical every load.
+   s = five symptom scores 0-3, v = % of planned tube volume given,
+   w = weight in kg on weigh-in days. */
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function buildDays(p){
+  const r=rng(p.seed), out=[], sum=p.prof.reduce((a,b)=>a+b,0);
+  for(let i=0;i<49;i++){
+    const wk=Math.floor(i/7), t=p.arc[wk];
+    const s=p.prof.map(w=>Math.max(0,Math.min(3,Math.round(t*w/sum+(r()-.5)*1.5))));
+    const v=Math.max(0,Math.min(100,Math.round(p.vol[wk]+(r()-.5)*11)));
+    const w=i%7===0?p.wt[i/7]:(i===48?p.wt[7]:null);
+    out.push({s,v,w});
+  }
+  return out;
+}
+const PROFILES=[
+ {id:"joost",name:"Joost",age:62,noteK:"n_joost",seed:1871,
+  feedA:"Fresubin Energy Fibre",feedB:"Nuvacal 1.6 Energy Protein Fiber",switchDay:22,
+  prof:[3,2,3,1,1], arc:[6,8,9,8,5,4,3], vol:[88,78,70,76,88,93,95], oral:[60,40,20,10,5,10,20],
+  wt:[78.0,77.2,76.0,74.8,74.2,73.8,73.6,73.5]},
+ {id:"annelies",name:"Annelies",age:57,noteK:"n_annelies",seed:4409,
+  feedA:"Nutrison Energy Multi Fibre",feedB:"Nuvacal 1.3 Plant-Based Fiber Vegan",switchDay:22,
+  prof:[2,1,3,3,2], arc:[7,8,8,7,5,4,4], vol:[80,75,72,80,90,94,96], oral:[30,25,20,25,35,45,55],
+  wt:[64.0,63.2,62.4,61.8,61.5,61.4,61.6,61.8]},
+ {id:"ruud",name:"Ruud",age:68,noteK:"n_ruud",seed:7723,
+  feedA:"Isosource Energy Fibre",feedB:"Nuvacal 1.6 Energy Protein Fiber",switchDay:22,
+  prof:[3,2,2,3,2], arc:[8,9,8,8,9,8,8], vol:[76,72,74,73,71,75,74], oral:[35,30,30,25,30,35,35],
+  wt:[71.0,70.0,69.2,68.4,67.6,67.0,66.4,66.0]},
+ {id:"fatima",name:"Fatima",age:54,noteK:"n_fatima",seed:9157,
+  feedA:"Nutrison Protein Plus Energy Multi Fibre",feedB:"Nuvacal 1.6 Energy Protein Fiber",switchDay:22,
+  prof:[2,1,2,2,2], arc:[5,6,6,6,5,6,5], vol:[86,84,82,85,86,84,87], oral:[55,45,30,20,15,20,30],
+  wt:[59.0,58.4,57.8,57.2,56.8,56.4,56.2,56.0]}
+];
+const PATIENTS=PROFILES.map(p=>Object.assign({},p,{days:buildDays(p)}));
+
+const EN={
+ h1:"Find the feed<br>that fits.",
+ lede:"Tube-fed patients react differently to the same formula. Families record symptoms in under a minute a day, and the dietitian finally sees which feed a patient tolerates — in a form that procurement can read too.",
+ cta1:"Try the daily log",cta2:"Explore the data",replay:"Replay",playing:"Playing",
+ nav1:"The problem",nav2:"How it works",nav3:"The data",nav4:"What comes out",nav5:"Size a pilot",nav6:"Questions",
+ pr_e:"The problem",pr_h:"Symptoms are seen every day and recorded nowhere useful",
+ pr_s:"From our interviews with Dutch paediatric gastroenterologists and dietitians, and from the procurement research behind them.",
+ pr_1h:"Two decision-makers, one missing input",pr_1p:"Dietitians judge effectiveness, procurement judges contracts and price. Neither has comparable tolerance evidence to argue with.",
+ pr_2h:"Five symptoms, five places",pr_2p:"Diarrhoea, bloating, nausea, vomiting and discomfort get noted across different systems and are rarely linked back to the feed that caused them.",
+ pr_3h:"No tool connects them",pr_3p:"There is no routine way to answer the simplest question a dietitian has: does this patient tolerate this feed better than the last one?",
+ q1:"There is not one brand that we are always using … it's really child dependent.",c1:"Paediatric gastroenterologist, Amsterdam UMC · team interview, 2026",
+ q2:"It would be valuable to have more data on which patients need tube feeding because they are malnourished.",c2:"Paediatric dietitian, UMCG · team interview, 2026",
+ lg_e:"How it works",lg_h:"One minute a day, at the kitchen table",
+ lg_s:"A working prototype. Log a day, then open History and Summary at the bottom to see what the family gets back.",
+ st1h:"The family logs, not the dietitian",st1p:"She is the bottleneck the tool exists to relieve, so it never adds to her day. A parent is already watching for these symptoms and already keeping notes.",
+ st2h:"Every brand on the Dutch market is in the list",st2p:"Nutrison, Nutrini and NutriniMax from Nutricia; Isosource and Compleat from Nestlé Health Science; Fresubin and NutriChef from Fresenius Kabi; the HiPP range; and Nuvacal. A log that only records one manufacturer's feed is a marketing device. One that records them all is a clinical instrument, and only the second convinces a procurement team.",
+ st3h:"No name ever enters the log",st3p:"The family opens it from a link tied to a code the hospital issued. The list that connects that code to a patient stays inside the hospital, and a supplier never holds it.",
+ st4h:"It records, it does not advise",st4p:"No alerts, no risk scores, no suggested feed. That restraint is what keeps it a record rather than clinical software, and it is a deliberate design choice rather than a missing feature.",
+ st5h:"Paper works too",st5p:"The asset is the standard way of recording, not the software. A printed card and a monthly summary prove the same thing at a fraction of the cost, which is what a first pilot can actually run.",
+ dt_e:"The data",dt_h:"The pattern a dietitian cannot see today",
+ dt_s:"Pick a patient and a view. Hover the charts or focus one and use the arrow keys; sort the table by any column.",
+ l_pat:"Patient",l_view:"View",l_grp:"Group",
+ m_score:"Daily total",m_vol:"Volume delivered",m_mix:"Symptom breakdown",m_chg:"Which symptoms changed",
+ sc_h:"Does intolerance cost nutrition?",sc_p:"Each dot is one day: symptom score against the share of the planned volume that actually went in.",
+ sc_n:"If the relationship holds in real data, a tolerance problem is also a nutrition problem — and that is the version of the argument procurement can put a number on. The pilot is designed to test it, not to assume it.",
+ sm_h:"The whole caseload at once",sm_p:"Four patients, same scale, feed change marked.",
+ sm_n:"Two of the four did not improve. A log that only produced success stories would be worth nothing to a dietitian, and a procurement team would say so within a minute.",
+ tb_h:"Every logged day",f_all:"All days",f_a:"Before the change",f_b:"After the change",f_bad:"Score 6 or more",
+ ag_e:"The aggregate",ag_h:"What it looks like across the whole Dutch market",
+ ag_s:"Nineteen complete tube feeds available in the Netherlands, modelled side by side. Drag the slider to see how many patients it would take before any of them separate from the others.",
+ ag_n:"<b>Every number in this chart is a placeholder.</b> No comparative tolerance data exists for these products — that is the gap the pilot is meant to fill. What is real here is the arithmetic: how a confidence interval narrows as the number of patients grows. Do not quote the estimates.",
+ ag_sl:"Patients per product",ag_hint:"Assumes a standard deviation of 2.5 points on the daily symptom score, and a 95% interval around each mean.",
+ ag_c:"<b style=\"color:var(--ink)\">This is the argument for the whole design.</b> Comparing nineteen products against each other needs hundreds of patients per product, which nobody is going to fund. Comparing one patient against themselves before and after a feed change needs a few dozen, because each patient is their own control. That is why the pilot measures switches, not brands.",
+ op_e:"What comes out",op_h:"Three audiences, one dataset",
+ op_s:"The same daily records answer a different question for each of the people who decide whether a feed stays in the hospital.",
+ o1f:"For the family",o1h:"Something back for the effort",
+ o1l:"<li>A monthly summary in plain language</li><li>Proof to bring to the next appointment</li><li>A reason to still be logging in week three</li>",
+ o2f:"For the dietitian",o2h:"Proof for what she already suspects",
+ o2l:"<li>Tolerance per feed, per patient, on one page</li><li>A record for the multidisciplinary meeting</li><li>Less guessing when a feed has to change</li>",
+ o3f:"For procurement",o3h:"A number other than price",
+ o3l:"<li>Symptom-days per patient-month</li><li>Share of planned volume actually delivered</li><li>Feed changes and interruptions per patient</li>",
+ pa_k:"For the family · monthly",pa_t:"Sem, October",pa_m:"28 of 31 days logged",
+ pa_s:"<p><b>Most days this month scored 2 or lower.</b> In September, most days were above 6.</p><p><b>One day with vomiting,</b> compared with eight the month before.</p><p><b>Sem took 94% of the planned volume,</b> up from 80%.</p>",
+ pa_f:"Bring this to the next appointment. It is a record of what you saw, not advice — your dietitian decides what it means.",
+ pa_c:"What a parent receives. Without this, logging is unpaid work and stops by week three.",
+ pb_k:"For the dietitian · per patient",pb_t:"Tolerance summary",pb_m:"Code NL-0442 · 7 yrs · 1–28 Oct · no name held",
+ pb_l:"<div class=\"ln\"><span>Feed, days 1–14</span><span>NutriniMax Multi Fibre</span></div><div class=\"ln\"><span>Feed, days 15–28</span><span>Nuvacal 1.3 Plant-Based<br>Fiber Vegan</span></div><div class=\"ln\"><span>Mean symptom score</span><span>8.2 → 3.1</span></div><div class=\"ln\"><span>Planned volume given</span><span>80% → 94%</span></div><div class=\"ln\"><span>Days with vomiting</span><span>8 → 1</span></div><div class=\"ln\"><span>Days logged</span><span>28 of 28</span></div>",
+ pb_n:"Dietitian's note and plan",pb_f:"Generated from the family's entries. No interpretation, no recommendation — the clinical judgement is hers.",
+ pb_c:"What the dietitian receives. It replaces a note she writes by hand rather than adding to her day.",
+ pl_e:"Size a pilot",pl_h:"What one centre would actually produce",
+ pl_s:"Move the sliders to your own assumptions. These are counts, not predictions — the tool makes no claim about what the data will show.",
+ pl_1:"Patients enrolled",pl_1h:"One specialist centre, one patient group.",
+ pl_2:"Length of the pilot",pl_2h:"Long enough to cover a feed change and the settling period after it.",
+ pl_3:"Share who change feed during it",pl_3h:"Your assumption, not ours. It decides how many before-and-after comparisons you end up with.",
+ pl_o1:"Patient-days logged",pl_o1d:"Each one a feed, a volume and five symptom scores",
+ pl_o2:"Symptom observations",pl_o2d:"Five per day, comparable across patients",
+ pl_o3:"Before-and-after cases",pl_o3d:"Patients with a feed change inside the window",
+ qu_e:"Questions",qu_h:"Four things that have to be true first",
+ qu_s:"A supplier collecting evidence on its own product is the obvious objection, and the honest answer is to design it out before anyone raises it.",
+ d1s:"Who can see the data?",
+ d1b:"<p>No name, address or date of birth ever enters the log. The hospital issues each patient a code, the family logs against that code, and the list that connects the two stays in the hospital's own system. A supplier never receives it and so cannot work back to a person.</p><div class=\"flowbox\"><div class=\"fl\"><i>01</i><span>The hospital issues a code, for example <b>NL-0442</b>, and keeps the only list that links it to a patient.</span></div><div class=\"fl\"><i>02</i><span>The family logs symptoms, volume and feed against that code. No identifying field exists in the form.</span></div><div class=\"fl\"><i>03</i><span>The dietitian sees her own patients because she has access to that list; nobody outside the hospital does.</span></div><div class=\"fl\"><i>04</i><span>What leaves the hospital is coded or counted — group totals, not rows that belong to a person.</span></div></div><p><b>Call it pseudonymised, not anonymous.</b> Under the GDPR, coded data is still personal data as long as a key exists somewhere, and with a few dozen children in one centre a date and a condition can narrow things down fast. Claiming full anonymity would not survive a conversation with a hospital privacy officer, and the design does not need it to: the point is that the key never leaves the hospital.</p><p>Independence matters for the same reason. Four insurers stopped reimbursing a medical nutrition product in 2013 after questions about sponsor-funded evidence, and a log run by a manufacturer invites exactly that. So the analysis plan is fixed before the pilot starts and <b>publication is agreed in writing regardless of the result</b> — including a result where a Nuvacal product performs no better.</p>",
+ d2s:"Why isn't this a medical device?",
+ d2b:"<p>Software is only a medical device if it has a medical purpose of its own. European guidance on qualifying software (MDCG 2019-11) draws the line at whether the software <b>acts on the data</b>: a product that stores, displays, communicates or searches what someone entered is not a device, while one that interprets it for a clinical decision usually is.</p><p>This version sits firmly on the first side, and the things it deliberately does not do are what keep it there:</p><ul><li><b>No risk score.</b> It adds up the five numbers the family typed. Arithmetic on the user's own entries is not interpretation.</li><li><b>No thresholds or alerts.</b> Nothing turns red, nothing notifies anyone, nothing says a value is too high.</li><li><b>No comparison against a norm.</b> It never tells you whether a score is normal for a seven-year-old.</li><li><b>No recommendation or prediction.</b> It never suggests a feed, never ranks one above another, never forecasts anything.</li></ul><p>What remains is a diary with a chart on top. The dietitian supplies every clinical judgement; the tool supplies the record she is judging. Add any one of the four above and this stops being true — software meant to inform a treatment decision falls under Rule 11 and is normally Class IIa or higher, which is a different project with a different budget.</p><p><b>One caution.</b> Intended purpose is set by what the maker claims, not only by what the code does. A marketing line promising to find the right feed could create a medical purpose on its own, so the wording on a real product page needs the same review as the software. The headline on this concept page is exactly the kind of claim a specialist should look at.</p>",
+ d3s:"Why would anyone still be using it in week three?",
+ d3b:"<p>Apps in healthcare die from abandonment, not rejection. The design answer is that it has to give something back rather than only take.</p><ul><li>The family gets a monthly summary they can bring to the appointment, so the logging has a visible point.</li><li>The dietitian's page replaces notes she already writes by hand, so her day gets shorter rather than longer.</li><li>Days-logged-per-patient is a reported outcome of the pilot, not an afterthought. If people stop, that is the finding.</li></ul>",
+ d4s:"What would it show if the feed made no difference?",
+ d4b:"<p>Exactly that, and visibly. In the data section above, open <b>Noor</b>: she moved to a Nuvacal product and her symptoms did not improve. <b>Fleur</b> changed within the same product family and nothing shifted either.</p><p>Two of the four example patients show no benefit, and that is deliberate. A log that only ever produced good news would be worth nothing to a dietitian, and a procurement team would see through it immediately. Leaving the failures in is what makes the rest of it readable.</p>",
+ cl_h:"Start with one centre, one patient group, one question.",
+ cl_p:"Does this patient tolerate this feed better than the last one? Answer it a few hundred times and you have the evidence the market is missing.",
+ ft1:"<b>Example data only.</b> Every patient, symptom score and modelled estimate on this page is invented for the concept and must not be presented as a result. Product names, manufacturers and energy densities are taken from the manufacturers' published Dutch product information; no tolerance claim is made about any of them.",
+ ft2:"A student concept for the UMIO Innovation Challenge · Maastricht University · Pillar 3 of the Nuvante storyboard. Not a Nuvante product, not medical advice, and not a regulatory or legal opinion.",
+ /* dynamic */
+ syms:["Diarrhoea","Bloating","Nausea","Vomiting","Discomfort"],lvl:["None","Mild","Mod.","Severe"],
+ dow:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+ yrs:"years",day:"Day",feed:"Feed given today",vol:"Volume taken, % of plan",sym:"Symptoms today",
+ save:"Save today",saved:"Saved",note:"No advice, no alerts. It records.",
+ tabs:["Today","History","Summary"],streak:n=>`${n}-day streak`,
+ hist:"Last 14 days",histnone:"Nothing logged yet.",tapmore:"Tap a day for detail",
+ sumt:"This month so far",total:"Total",volume:"Volume",
+ k1:"Days logged",k2:"Typical daily score",k3:"Days with vomiting",
+ sumtmed:"the middle day of the month",sumtof:"out of",
+ sumnote:"A record of what you saw, not advice. Your dietitian decides what it means.",
+ toast:n=>`Day ${n} saved to the record.`,seech:"See the chart",
+ n_sem:"Long-term tube feeding, neurological impairment",n_fleur:"Energy need increased, same product family",
+ n_daan:"Switched after repeated interruptions",n_noor:"No improvement after the change",
+ nochange:" · no change",heroday:(a,b)=>`day ${a} of ${b}`,
+ t1:"Mean symptom score",t1d:"per day, out of 15",t2:"Planned volume given",t2d:"mean per day",
+ t3:"Days with vomiting",t3d:(a,b)=>`of ${a} and ${b} days`,
+ dsub:(note,a,b,day,n)=>`${note} · ${a} → ${b} on day ${day} · ${n} days logged`,
+ cols:["Day","Feed","","","","","","Total","Volume"],
+ tblcount:(a,b)=>`${a} of ${b} logged days shown. Click a column heading to sort.`,
+ lg_mix:"none · mild · moderate · severe",lg_mixn:"Purple line: the day the feed changed.",
+ lg_score:"Daily total across five symptoms, 0–15",lg_scoren:"Dashes: period mean. Purple line: the feed change.",
+ lg_vol:"Share of the planned volume actually given",
+ lg_before:"before the change",lg_after:"after the change",
+ lg_chgn:"The number on the right is the shift in mean score. A dot further left is better.",
+ ag_l1:"Nuvacal",ag_l2:"Other products",ag_l3:"Bar: 95% interval. Dot: modelled mean. Lower is better.",
+ cats:[["all","All 19"],["standard","Standard 1.0"],["energy","Energy-dense"],["plant","Plant-based"],["food","Food-based"],["paed","Paediatric"]],
+ wk:n=>n+" weeks",
+ agA:(n,o)=>`At <b>${n}</b> patients per product, Nuvacal 1.3's interval no longer overlaps any of the other ${o}. That is roughly the sample size a head-to-head comparison would need — and nobody is funding it.`,
+ agB:(n,o)=>`At <b>${n}</b> patients per product, <b>every one</b> of the other ${o} intervals still overlaps Nuvacal 1.3's. Nothing here can be told apart from anything else.`,
+ agC:(n,v,o)=>`At <b>${n}</b> patients per product, <b>${v} of the other ${o}</b> intervals still overlap Nuvacal 1.3's. It separates from ${o-v}, and the rest remain indistinguishable.`,
+ agD:n=>`At <b>${n}</b> patients per product the 95% interval is ±${(1.96*2.5/Math.sqrt(n)).toFixed(2)} points wide. Switch to <b>All 19</b> to compare against Nuvacal 1.3.`,
+ /* ── head and neck / upper GI focus ── */
+ lede:"Patients on tube feeding during chemoradiation react differently to the same formula. They log symptoms, intake and weight in under a minute a day, and the dietitian finally sees which feed a patient tolerates — in a form the treatment team and procurement can read too.",
+ nav5:"The pilot",nav7:"Why weight",nav8:"Staying with it",
+ pr_s:"From our interviews with Dutch clinicians and dietitians, and from the procurement research behind them.",
+ pr_2p:"Nausea, vomiting, reflux, bloating and diarrhoea get noted across different systems and are rarely linked back to the feed that caused them.",
+ pop_h:"The population we are actually reaching",
+ pop_1:"new head and neck cancer diagnoses a year in the Netherlands",
+ pop_2:"of them tube-fed during chemoradiotherapy",
+ pop_2e:"our estimate; the radiotherapy share is still unverified",
+ pop_3:"centres treat almost all of them, so a handful of dietetic teams reaches the whole country",
+ pop_4:"a year at the Antoni van Leeuwenhoek, our proposed first centre",
+ pop_n:"This is an evidence play, not a volume play. The group is small enough to study properly and concentrated enough to reach.",
+ q1:"There is not one brand that we are always using … it's really patient dependent.",c1:"Gastroenterologist, Amsterdam UMC · team interview, 2026",
+ q2:"It would be valuable to have more data on which patients need tube feeding because they are malnourished.",c2:"Dietitian, UMCG · team interview, 2026",
+ wt_e:"Why weight",wt_h:"The number everyone already acts on, and almost nobody records",
+ wt_s:"Tolerance is the mechanism. Weight is the outcome. The log is the first thing that holds both at once, which is why weight belongs in it.",
+ wt_1h:"It starts before treatment does",
+ wt_1p:"One in five head and neck patients already has critical weight loss at diagnosis, and in tumours of the lower throat it is more than four in ten. Over half of patients without metastases have lost weight by their first oncology visit.",
+ wt_1e:"Jager-Wittenaar et al. 2007 (UMCG, 407 patients); Muscaritoli et al. 2017 (PreMiO)",
+ wt_2h:"Treatment makes it worse",
+ wt_2p:"Up to 88% of head and neck patients can become malnourished during chemoradiation. Across cancer patients, 20 to 30% may die from the consequences of malnutrition rather than from the cancer.",
+ wt_2e:"Löser et al. 2024 (SUFEETUBE); Caccialanza et al. 2020",
+ wt_3h:"Weight loss changes the treatment",
+ wt_3p:"Patients who lose weight are 1.3 to 1.7 times more likely to have their systemic treatment modified. That is the moment nutrition stops being supportive care and starts affecting the chance of cure.",
+ wt_3e:"Shaw et al. 2020",
+ wt_4h:"Feeding early protects both",
+ wt_4p:"Head and neck patients who started tube feeding before treatment lost 2.4% of their weight against 15.2% without a tube, and completed 96% of their chemotherapy against 81.7%. Fewer emergency visits too.",
+ wt_4e:"Lewis et al. 2014",
+ wt_5h:"But only if the feed is tolerated",
+ wt_5p:"Around 40% of tube-fed cancer patients still do not reach their protein and energy targets, and 30.5% of tube-fed intensive care patients develop feed intolerance. A feed that is prescribed is not yet a feed that is delivered.",
+ wt_5e:"De Souza et al. 2018; critical care cohort on enteral feed intolerance",
+ wt_6h:"And almost nobody measures it",
+ wt_6p:"77% of German head and neck physicians do not screen nutrition routinely before chemoradiation. The chain above is well evidenced and barely instrumented. A weekly weight and a daily symptom score close that gap at almost no cost.",
+ wt_6e:"Löser et al. 2024",
+ wt_lh:"One thing we deliberately left out",
+ wt_lp:"Dietitians watch for a 5% loss, because that is where malnutrition criteria start. We considered drawing that line on the weight chart and decided not to. A threshold is a comparison against a norm, and that is one of the four things that would turn this record into regulated clinical software. The chart shows the weight and the percentage change; the dietitian knows where the line sits.",
+ lg_s:"A working prototype. Log a day, then open History and Summary at the bottom to see what the patient gets back.",
+ st1h:"The patient logs, not the dietitian",
+ st1p:"She is the bottleneck the tool exists to relieve, so it never adds to her day. A patient on chemoradiation is already watching for these symptoms, and on the worst weeks a partner can log instead.",
+ st2p:"Nutrison and Nutrison Protein Plus from Nutricia; Isosource and Compleat from Nestlé Health Science; Fresubin and NutriChef from Fresenius Kabi; and Nuvacal. A log that only records one manufacturer's feed is a marketing device. One that records them all is a clinical instrument, and only the second convinces a procurement team.",
+ st4p:"No alerts, no risk scores, no suggested feed, and no threshold line on the weight chart. That restraint is what keeps it a record rather than clinical software, and it is a deliberate design choice rather than a missing feature.",
+ st5p:"The asset is the standard way of recording, not the software. A printed weekly card proves the same thing at a fraction of the cost, which is what a first pilot can actually run.",
+ m_vol:"Volume and intake",m_wt:"Weight",
+ lg_tube:"by tube",lg_mouth:"by mouth",
+ lg_voln:"Both as a share of what was planned or normal. Dashes: period mean for the tube. Purple line: the feed change.",
+ lg_wt:"weight, kg",lg_wtn:"Weighed weekly. Dashes: starting weight. No threshold line, by design.",
+ wt_base:"start",wtshort:"Weight",wtlab:"Weight today, kg",wtnote:"Weigh-in day — once a week is enough.",
+ oral:"Managed by mouth, % of normal",
+ t4:"Weight",t4d:"start to latest ·",t5:"Taken by mouth",t5d:"mean per day",
+ cols:["Day","Feed","","","","","","Total","By tube","By mouth","Weight"],
+ syms:["Nausea","Vomiting","Reflux","Bloating","Diarrhoea"],
+ week:n=>`Week ${n} of 7`,
+ k1:"Days logged",k1d:"through the seven-week course",
+ k2:"Typical daily score",k4:"Given by tube",k4d:"mean this week, % of plan",
+ k5:"Latest weight",k5d:"since you started",
+ sumt:"Your week",sumtmed:"the middle day of this week",
+ sumnote:"A record of what you saw, not advice. Bring it to your appointment — your dietitian decides what it means.",
+ n_joost:"Larynx cancer, chemoradiation, nasogastric tube",
+ n_annelies:"Oesophageal cancer, feeding jejunostomy after surgery",
+ n_ruud:"Stomach cancer after gastrectomy",
+ n_fatima:"Oropharynx cancer, chemoradiation",
+ kp_e:"Staying with it",kp_h:"Apps in healthcare die from abandonment, not rejection",
+ kp_s:"Seven weeks of chemoradiation is a long time to ask anything of someone whose mouth hurts. These are the levers we would rely on, strongest first. The cheapest ones are also the best ones.",
+ kp_1h:"Twenty seconds a day",
+ kp_1p:"Dull, and the single biggest lever there is. Every extra field costs adherence. In a population with mucositis and fatigue this outranks every clever mechanic, which is why the daily entry is five taps and two sliders.",
+ kp_2h:"Your dietitian sees this on Thursday",
+ kp_2p:"Accountability inside a real clinical relationship beats any points system. These patients are in clinic every week during treatment, so the summary lands the evening before the appointment and gets opened in front of them.",
+ kp_3h:"Your seven weeks become the evidence for the next patient",
+ kp_3p:"Cancer patients consistently say they want their experience to count for something. Here it is literally true: this group is small, and a few dozen complete records are the difference between an opinion and a finding.",
+ kp_4h:"Week 4 of 7, not a streak",
+ kp_4p:"Progress that maps onto the treatment they want to finish. A brittle streak does the opposite: break it on a bad day and people quit, and here a bad day is a symptom of a serious illness. Nothing in the app ever scolds.",
+ kp_5h:"The data itself as the reward",
+ kp_5p:"After two weeks there is enough to show someone their own pattern. Self-knowledge is the most durable motivator there is, and it costs nothing to give away.",
+ kp_6h:"A reminder at a time they choose",
+ kp_6p:"Unglamorous and very effective. Chosen by the patient, not set by us, and silenceable without guilt.",
+ kp_7h:"A prize draw",
+ kp_7p:"Worth doing, but last on this list rather than first. Extrinsic rewards work in the short term and can crowd out the intrinsic ones above. It is also the only item here that needs sign-off before it can run.",
+ b_ok:"No approval needed",b_warn:"Legal and ethics review",
+ kp_rh:"Four things to settle before the draw runs",
+ kp_r1:"<b>It can reward quantity over accuracy.</b> Count only complete daily entries, one per day, and timestamp them so back-filled days are visible.",
+ kp_r2:"<b>A manufacturer-funded prize looks like marketing.</b> Run the draw through the hospital or an independent party, and keep the log feed-agnostic so entries are never tied to using a Nuvacal product.",
+ kp_r3:"<b>Promotional prize draws are regulated in the Netherlands,</b> and so is the promotion of medical nutrition. Both need a legal check before launch.",
+ kp_r4:"<b>Odds that rise with entries is the shape an ethics committee questions.</b> Compensation should cover time and burden rather than induce participation, and this group is vulnerable. A flat thank-you for everyone who completes, or a donation per completed week to a patient fund, achieves most of the effect without the objection.",
+ kp_th:"Better still: test the incentive instead of assuming it",
+ kp_tp:"Randomise half the patients to the draw and measure days logged in each arm. You come out with two findings instead of one: the tolerance data, and a real answer to what keeps patients logging during chemoradiation. The second is publishable, useful to the field, and it neutralises the marketing objection, because you are studying the incentive rather than deploying it.",
+ kp_tq:"<b>And treat silence as data.</b> Someone who stops logging may simply be very unwell, which is worth knowing. The dietitian's page shows when a patient last logged — a statement of fact, not an alert, which keeps it on the right side of the line described below.",
+ op_s:"The same daily records answer a different question for each of the four people who decide whether a feed stays in the hospital.",
+ o1f:"For the patient",o1h:"Something back for the effort",
+ o1l:"<li>A weekly summary in plain language</li><li>Something to bring to Thursday's appointment</li><li>A reason to still be logging in week five</li>",
+ o2l:"<li>Tolerance and weight per patient, on one page</li><li>A record for the multidisciplinary meeting</li><li>Less guessing when a feed has to change</li>",
+ o4f:"For the treatment team",o4h:"Nutrition visible in the treatment record",
+ o4l:"<li>Weight trajectory beside tolerance, week by week</li><li>Early sight of the patients losing ground</li><li>The variable that modifies treatment, measured</li>",
+ o3l:"<li>Symptom-days per patient-month</li><li>Share of planned volume actually delivered</li><li>Weight held, interruptions avoided</li>",
+ mo_h:"What it is worth, in euros",
+ mo_1:"a year: the cost of untreated malnutrition in Dutch care, including lost work and quality of life (€356m direct)",
+ mo_2:"returned for every €1 spent treating malnutrition in hospitals",
+ mo_3:"and 1.4 extra days in hospital, per malnourished patient",
+ mo_4:"of emergency visits by head and neck patients during and after chemoradiation were nutrition-related",
+ mo_n:"Figures from a 2024 Dutch health-economic analysis (Nuijten, A2M) and Lewis et al. 2014. Price per bottle is the wrong measure; this is the one procurement can act on.",
+ pl_e:"The pilot",
+ pl_1h:"The AVL sees around 300 a year, so 30 to 50 is a realistic first cohort.",
+ pl_2h:"Seven weeks of chemoradiation plus recovery. Weight keeps moving after treatment ends.",
+ pl_o4:"Weights recorded",pl_o4d:"One a week per patient, the outcome the oncology team reads",
+ av_h:"Why the Antoni van Leeuwenhoek first",
+ av_p:"The AVL is the Netherlands' dedicated cancer hospital and one of its eight head and neck oncology centres. Around 905 newly diagnosed patients a year there face serious tube-feeding needs: over 600 with head and neck cancer, 186 with oesophageal and 119 with stomach cancer. It already states that cancer care is about more than survival numbers, and it backs that with a Centre for Quality of Life bringing together 14 clinical disciplines, oncology dietitians and speech therapists among them.",
+ av_p2:"A focused hospital that already measures quality of life is more likely to buy on outcome than a large network buying on volume. The entry point is the dietitian, not the patient: she hands out access when tube feeding starts.",
+ av_1b:"Ready for value-based procurement",av_1s:"Quality of life is a strategic goal with its own department, so outcomes rather than unit price can drive the choice.",
+ av_2b:"The right team in one place",av_2s:"Dietitians, speech therapists and psychologists already work side by side — natural users of one shared record.",
+ av_3b:"A fit for the product",av_3s:"An energy- and protein-dense feed plus tolerance data gives the centre evidence it wants to collect anyway.",
+ av_4b:"Then the network",av_4s:"After one documented pilot, the head and neck dietetic network reaches the other 13 centres. Belgium is the logical next country; Germany after that.",
+ qu_h:"Five things that have to be true first",
+ d5s:"Does this need ethics approval?",
+ d5b:"<p>The hospital decides, and that conversation has to happen before anyone is enrolled.</p><p>A project that collects routine care data to improve care is often <b>non-WMO</b> — outside the Dutch Medical Research Involving Human Subjects Act — because patients are not subjected to an intervention or made to follow imposed behaviour. The feed is chosen by the dietitian exactly as it would be anyway; the log records what happened.</p><p><b>Two things would change that answer.</b> Requiring patients to log as a study procedure starts to look like imposed behaviour. And adding an incentive, particularly a randomised one, makes the project a study of behaviour rather than a record of care. If the prize draw goes ahead in the form described above, assume the question has to be asked again.</p><p>So the sequence is: ask the AVL's research office or METC for a non-WMO declaration first, agree the data-processing arrangement with the hospital as controller, and only then design the incentive. Doing it the other way round costs months.</p>",
+ d4b:"<p>Exactly that, and visibly. In the data section above, open <b>Ruud</b>: he moved to a Nuvacal product and his symptoms did not improve and his weight kept falling. <b>Fatima</b> changed to an energy-dense feed and nothing shifted either.</p><p>Two of the four example patients show no benefit, and that is deliberate. A log that only ever produced good news would be worth nothing to a dietitian, and a procurement team would see through it immediately. Leaving the failures in is what makes the rest of it readable.</p>",
+ cats:[["all","All 19"],["standard","Standard 1.0"],["energy","Energy-dense"],["protein","High protein"],["plant","Plant-based"],["food","Food-based"]],
+ ag_s:"Nineteen complete adult tube feeds available in the Netherlands, modelled side by side. Drag the slider to see how many patients it would take before any of them separate from the others.",
+ cl_h:"Start with one centre, one patient group, one question.",
+ cl_p:"Does this patient tolerate this feed better than the last one, and did their weight hold? Answer that a few hundred times and you have the evidence the market is missing.",
+ /* ── revisions ── */
+ m_vol:"Volume delivered",
+ cols:["Day","Feed","","","","","","Total","Volume","Weight"],
+ op_s:"The same daily records answer a different question for each of the three people who decide whether a feed stays in the hospital.",
+ kp_3p:"This group is small enough that a few dozen complete records change what is known about it. Telling someone that plainly gives them a reason to keep going that has nothing to do with a prize, and unlike most such promises it happens to be true.",
+ kp_r3:"<b>Promotional prize draws are regulated in the Netherlands,</b> and so is the promotion of medical nutrition — two separate checks. Where to ask: the AVL's own legal department and Maastricht University's legal counsel, which is free to you as students, for the draw itself; the Gedragscode Promotionele Kansspelen for the rules a promotional draw has to follow, with the Kansspelautoriteit behind it; and the Keuringsraad (KOAG/KAG), which vets advertising for health products, for anything that reads as a claim. Ask before anything is printed, not after.",
+};
+
+const NL={
+ h1:"Vind de voeding<br>die past.",
+ lede:"Patiënten met sondevoeding reageren verschillend op dezelfde voeding. Het gezin legt klachten vast in minder dan een minuut per dag, en de diëtist ziet eindelijk welke voeding een patiënt verdraagt — in een vorm die ook de inkoop kan lezen.",
+ cta1:"Probeer het dagboek",cta2:"Bekijk de data",replay:"Opnieuw",playing:"Speelt af",
+ nav1:"Het probleem",nav2:"Hoe het werkt",nav3:"De data",nav4:"Wat het oplevert",nav5:"Pilot berekenen",nav6:"Vragen",
+ pr_e:"Het probleem",pr_h:"Klachten worden elke dag gezien en nergens bruikbaar vastgelegd",
+ pr_s:"Uit onze interviews met Nederlandse kinder-MDL-artsen en diëtisten, en uit het inkooponderzoek daarachter.",
+ pr_1h:"Twee beslissers, één ontbrekend gegeven",pr_1p:"Diëtisten beoordelen de effectiviteit, de inkoop beoordeelt contracten en prijs. Geen van beiden heeft vergelijkbare gegevens over verdraagzaamheid om zich op te baseren.",
+ pr_2h:"Vijf klachten, vijf plekken",pr_2p:"Diarree, een opgeblazen gevoel, misselijkheid, braken en buikpijn worden in verschillende systemen genoteerd en zelden teruggekoppeld aan de voeding die ze veroorzaakte.",
+ pr_3h:"Geen hulpmiddel verbindt ze",pr_3p:"Er is geen gangbare manier om de eenvoudigste vraag van een diëtist te beantwoorden: verdraagt deze patiënt deze voeding beter dan de vorige?",
+ q1:"Er is niet één merk dat we altijd gebruiken … het is echt kindafhankelijk.",c1:"Kinder-MDL-arts, Amsterdam UMC · teaminterview, 2026",
+ q2:"Het zou waardevol zijn om meer data te hebben over welke patiënten sondevoeding nodig hebben omdat ze ondervoed zijn.",c2:"Kinderdiëtist, UMCG · teaminterview, 2026",
+ lg_e:"Hoe het werkt",lg_h:"Eén minuut per dag, aan de keukentafel",
+ lg_s:"Een werkend prototype. Vul een dag in en open daarna Overzicht en Samenvatting onderaan om te zien wat het gezin terugkrijgt.",
+ st1h:"Het gezin legt vast, niet de diëtist",st1p:"Zij is het knelpunt dat dit hulpmiddel juist wil verlichten, dus het kost haar geen extra tijd. Een ouder let al op deze klachten en houdt al aantekeningen bij.",
+ st2h:"Elk merk op de Nederlandse markt staat in de lijst",st2p:"Nutrison, Nutrini en NutriniMax van Nutricia; Isosource en Compleat van Nestlé Health Science; Fresubin en NutriChef van Fresenius Kabi; het HiPP-assortiment; en Nuvacal. Een dagboek dat alleen de voeding van één fabrikant vastlegt is een marketingmiddel. Eén dat ze allemaal vastlegt is een klinisch instrument, en alleen het tweede overtuigt een inkoopteam.",
+ st3h:"Er komt nooit een naam in het dagboek",st3p:"Het gezin opent het via een link die hoort bij een code die het ziekenhuis heeft uitgegeven. De lijst die die code aan een patiënt koppelt blijft binnen het ziekenhuis; een leverancier heeft die nooit.",
+ st4h:"Het legt vast, het adviseert niet",st4p:"Geen meldingen, geen risicoscores, geen voorgestelde voeding. Juist die terughoudendheid maakt het een verslag in plaats van klinische software, en dat is een bewuste keuze, geen ontbrekende functie.",
+ st5h:"Op papier werkt het ook",st5p:"De waarde zit in de gestandaardiseerde manier van vastleggen, niet in de software. Een geprinte kaart en een maandoverzicht bewijzen hetzelfde voor een fractie van de kosten, en dat is wat een eerste pilot echt kan uitvoeren.",
+ dt_e:"De data",dt_h:"Het patroon dat een diëtist vandaag niet kan zien",
+ dt_s:"Kies een patiënt en een weergave. Beweeg over de grafieken of gebruik de pijltjestoetsen; sorteer de tabel op elke kolom.",
+ l_pat:"Patiënt",l_view:"Weergave",l_grp:"Groep",
+ m_score:"Dagtotaal",m_vol:"Gegeven volume",m_mix:"Klachten per soort",m_chg:"Welke klachten veranderden",
+ sc_h:"Kost slechte verdraagzaamheid voeding?",sc_p:"Elke stip is één dag: de klachtenscore tegenover het deel van het geplande volume dat daadwerkelijk is gegeven.",
+ sc_n:"Als dit verband ook in echte data opgaat, is een verdraagzaamheidsprobleem ook een voedingsprobleem — en dat is de versie van het argument waar de inkoop een bedrag aan kan hangen. De pilot is ontworpen om dit te toetsen, niet om het aan te nemen.",
+ sm_h:"De hele caseload in één keer",sm_p:"Vier patiënten, dezelfde schaal, het moment van wisselen gemarkeerd.",
+ sm_n:"Twee van de vier gingen niet vooruit. Een dagboek dat alleen succesverhalen oplevert is voor een diëtist waardeloos, en een inkoopteam zou dat binnen een minuut zeggen.",
+ tb_h:"Elke ingevulde dag",f_all:"Alle dagen",f_a:"Vóór de wissel",f_b:"Na de wissel",f_bad:"Score 6 of hoger",
+ ag_e:"Het totaalbeeld",ag_h:"Hoe het eruitziet over de hele Nederlandse markt",
+ ag_s:"Negentien volledige sondevoedingen die in Nederland verkrijgbaar zijn, naast elkaar gemodelleerd. Schuif met de slider om te zien hoeveel patiënten nodig zijn voordat er één van de andere te onderscheiden is.",
+ ag_n:"<b>Elk getal in deze grafiek is een plaatshouder.</b> Er bestaat geen vergelijkende data over verdraagzaamheid voor deze producten — dat is precies het gat dat de pilot moet vullen. Wat hier wél klopt is de rekensom: hoe een betrouwbaarheidsinterval smaller wordt naarmate er meer patiënten zijn. Citeer de schattingen niet.",
+ ag_sl:"Patiënten per product",ag_hint:"Gaat uit van een standaarddeviatie van 2,5 punten op de dagscore en een 95%-interval rond elk gemiddelde.",
+ ag_c:"<b style=\"color:var(--ink)\">Dit is het argument voor het hele ontwerp.</b> Negentien producten onderling vergelijken vraagt honderden patiënten per product, en dat gaat niemand financieren. Eén patiënt met zichzelf vergelijken vóór en na een wissel vraagt er enkele tientallen, omdat elke patiënt zijn eigen controle is. Daarom meet de pilot wisselingen, geen merken.",
+ op_e:"Wat het oplevert",op_h:"Drie doelgroepen, één dataset",
+ op_s:"Dezelfde dagelijkse gegevens beantwoorden een andere vraag voor elk van de mensen die bepalen of een voeding in het ziekenhuis blijft.",
+ o1f:"Voor het gezin",o1h:"Iets terug voor de moeite",
+ o1l:"<li>Een maandoverzicht in gewone taal</li><li>Bewijs om mee te nemen naar de volgende afspraak</li><li>Een reden om in week drie nog steeds in te vullen</li>",
+ o2f:"Voor de diëtist",o2h:"Bewijs voor wat ze al vermoedt",
+ o2l:"<li>Verdraagzaamheid per voeding, per patiënt, op één pagina</li><li>Een verslag voor het multidisciplinair overleg</li><li>Minder gissen als een voeding moet wisselen</li>",
+ o3f:"Voor de inkoop",o3h:"Een ander getal dan de prijs",
+ o3l:"<li>Klachtendagen per patiëntmaand</li><li>Deel van het geplande volume dat echt is gegeven</li><li>Wisselingen en onderbrekingen per patiënt</li>",
+ pa_k:"Voor het gezin · maandelijks",pa_t:"Sem, oktober",pa_m:"28 van de 31 dagen ingevuld",
+ pa_s:"<p><b>De meeste dagen deze maand scoorden 2 of lager.</b> In september waren de meeste dagen hoger dan 6.</p><p><b>Eén dag met braken,</b> tegenover acht de maand ervoor.</p><p><b>Sem kreeg 94% van het geplande volume,</b> tegenover 80% eerder.</p>",
+ pa_f:"Neem dit mee naar de volgende afspraak. Het is een verslag van wat u zag, geen advies — uw diëtist bepaalt wat het betekent.",
+ pa_c:"Wat een ouder terugkrijgt. Zonder dit is invullen onbetaald werk en stopt het in week drie.",
+ pb_k:"Voor de diëtist · per patiënt",pb_t:"Verdraagzaamheidsoverzicht",pb_m:"Code NL-0442 · 7 jr · 1–28 okt · geen naam vastgelegd",
+ pb_l:"<div class=\"ln\"><span>Voeding, dag 1–14</span><span>NutriniMax Multi Fibre</span></div><div class=\"ln\"><span>Voeding, dag 15–28</span><span>Nuvacal 1.3 Plant-Based<br>Fiber Vegan</span></div><div class=\"ln\"><span>Gemiddelde klachtenscore</span><span>8,2 → 3,1</span></div><div class=\"ln\"><span>Gegeven deel van het plan</span><span>80% → 94%</span></div><div class=\"ln\"><span>Dagen met braken</span><span>8 → 1</span></div><div class=\"ln\"><span>Dagen ingevuld</span><span>28 van de 28</span></div>",
+ pb_n:"Notitie en plan van de diëtist",pb_f:"Gemaakt op basis van wat het gezin invulde. Geen uitleg, geen aanbeveling — de klinische afweging is aan haar.",
+ pb_c:"Wat de diëtist terugkrijgt. Het vervangt een notitie die ze nu met de hand schrijft, in plaats van er werk bij te geven.",
+ pl_e:"Pilot berekenen",pl_h:"Wat één centrum daadwerkelijk zou opleveren",
+ pl_s:"Zet de sliders op uw eigen aannames. Dit zijn aantallen, geen voorspellingen — het hulpmiddel claimt niets over wat de data zullen laten zien.",
+ pl_1:"Aantal patiënten",pl_1h:"Eén gespecialiseerd centrum, één patiëntengroep.",
+ pl_2:"Duur van de pilot",pl_2h:"Lang genoeg voor een voedingswissel en de gewenningsperiode erna.",
+ pl_3:"Deel dat tijdens de pilot wisselt",pl_3h:"Uw aanname, niet die van ons. Dit bepaalt hoeveel voor-en-na-vergelijkingen u overhoudt.",
+ pl_o1:"Patiëntdagen ingevuld",pl_o1d:"Elk met een voeding, een volume en vijf klachtenscores",
+ pl_o2:"Klachtenwaarnemingen",pl_o2d:"Vijf per dag, vergelijkbaar tussen patiënten",
+ pl_o3:"Voor-en-na-gevallen",pl_o3d:"Patiënten met een voedingswissel binnen de periode",
+ qu_e:"Vragen",qu_h:"Vier dingen die eerst moeten kloppen",
+ qu_s:"Dat een leverancier bewijs verzamelt over zijn eigen product is het voor de hand liggende bezwaar, en het eerlijke antwoord is om dat weg te ontwerpen voordat iemand het opbrengt.",
+ d1s:"Wie kan de data zien?",
+ d1b:"<p>Er komt nooit een naam, adres of geboortedatum in het dagboek. Het ziekenhuis geeft elke patiënt een code, het gezin vult in onder die code, en de lijst die beide verbindt blijft in het systeem van het ziekenhuis. Een leverancier krijgt die lijst nooit en kan dus niet terugredeneren naar een persoon.</p><div class=\"flowbox\"><div class=\"fl\"><i>01</i><span>Het ziekenhuis geeft een code uit, bijvoorbeeld <b>NL-0442</b>, en houdt als enige de lijst bij die deze aan een patiënt koppelt.</span></div><div class=\"fl\"><i>02</i><span>Het gezin legt klachten, volume en voeding vast onder die code. Er is geen veld in het formulier waarin iemand herkenbaar wordt.</span></div><div class=\"fl\"><i>03</i><span>De diëtist ziet haar eigen patiënten omdat zij toegang heeft tot die lijst; niemand buiten het ziekenhuis heeft dat.</span></div><div class=\"fl\"><i>04</i><span>Wat het ziekenhuis verlaat is gecodeerd of geteld — groepstotalen, geen regels die bij één persoon horen.</span></div></div><p><b>Noem het gepseudonimiseerd, niet anoniem.</b> Onder de AVG blijft gecodeerde data persoonsgegeven zolang er ergens een sleutel bestaat, en met enkele tientallen kinderen in één centrum kunnen een datum en een aandoening de kring snel verkleinen. De claim dat het volledig anoniem is houdt geen stand bij een functionaris gegevensbescherming, en dat hoeft ook niet: het punt is dat de sleutel het ziekenhuis nooit verlaat.</p><p>Onafhankelijkheid is om dezelfde reden belangrijk. Vier verzekeraars stopten in 2013 met de vergoeding van een medisch voedingsproduct na vragen over door de sponsor gefinancierd onderzoek, en een dagboek dat door een fabrikant wordt beheerd nodigt precies daartoe uit. Daarom staat het analyseplan vast vóór de pilot begint en is <b>publicatie schriftelijk afgesproken, ongeacht de uitkomst</b> — ook een uitkomst waarin een Nuvacal-product het niet beter doet.</p>",
+ d2s:"Waarom is dit geen medisch hulpmiddel?",
+ d2b:"<p>Software is alleen een medisch hulpmiddel als het een eigen medisch doel heeft. De Europese leidraad voor het kwalificeren van software (MDCG 2019-11) legt de grens bij de vraag of de software <b>iets met de data doet</b>: een product dat opslaat, toont, doorstuurt of doorzoekt wat iemand heeft ingevuld is geen hulpmiddel, terwijl een product dat het uitlegt ten behoeve van een klinische beslissing dat meestal wel is.</p><p>Deze versie zit duidelijk aan de eerste kant, en juist wat het bewust níét doet houdt het daar:</p><ul><li><b>Geen risicoscore.</b> Het telt de vijf getallen op die het gezin invulde. Rekenen met iemands eigen invoer is geen uitleg.</li><li><b>Geen grenswaarden of meldingen.</b> Niets wordt rood, niemand krijgt een signaal, nergens staat dat een waarde te hoog is.</li><li><b>Geen vergelijking met een norm.</b> Het zegt nooit of een score normaal is voor een kind van zeven.</li><li><b>Geen aanbeveling of voorspelling.</b> Het stelt nooit een voeding voor, zet er nooit één boven de ander en voorspelt niets.</li></ul><p>Wat overblijft is een dagboek met een grafiek erbij. Elke klinische afweging komt van de diëtist; het hulpmiddel levert alleen het verslag waarover zij oordeelt. Voeg één van de vier punten hierboven toe en dit klopt niet meer — software die bedoeld is om een behandelbeslissing te ondersteunen valt onder regel 11 en is doorgaans klasse IIa of hoger, en dat is een ander project met een ander budget.</p><p><b>Eén waarschuwing.</b> Het beoogde doel wordt bepaald door wat de maker claimt, niet alleen door wat de code doet. Een marketingzin die belooft de juiste voeding te vinden kan op zichzelf al een medisch doel creëren, dus de tekst op een echte productpagina vraagt dezelfde toetsing als de software. De kop op deze conceptpagina is precies zo'n claim waar een specialist naar zou moeten kijken.</p>",
+ d3s:"Waarom zou iemand het in week drie nog gebruiken?",
+ d3b:"<p>Apps in de zorg sterven aan afhaken, niet aan afwijzing. Het ontwerpantwoord is dat het iets moet teruggeven in plaats van alleen te vragen.</p><ul><li>Het gezin krijgt een maandoverzicht mee naar de afspraak, zodat het invullen zichtbaar ergens toe leidt.</li><li>De pagina van de diëtist vervangt notities die ze nu met de hand schrijft, dus haar dag wordt korter in plaats van langer.</li><li>Het aantal ingevulde dagen per patiënt is een gerapporteerde uitkomst van de pilot, geen bijzaak. Als mensen stoppen, is dát de bevinding.</li></ul>",
+ d4s:"Wat laat het zien als de voeding geen verschil maakte?",
+ d4b:"<p>Precies dat, en zichtbaar. Open in het datagedeelte hierboven <b>Noor</b>: zij stapte over op een Nuvacal-product en haar klachten verbeterden niet. Bij <b>Fleur</b> werd binnen dezelfde productfamilie gewisseld en veranderde er evenmin iets.</p><p>Twee van de vier voorbeeldpatiënten laten geen voordeel zien, en dat is bewust. Een dagboek dat alleen goed nieuws oplevert is voor een diëtist waardeloos, en een inkoopteam prikt daar meteen doorheen. Dat de mislukkingen erin blijven staan maakt de rest juist leesbaar.</p>",
+ cl_h:"Begin met één centrum, één patiëntengroep, één vraag.",
+ cl_p:"Verdraagt deze patiënt deze voeding beter dan de vorige? Beantwoord die vraag een paar honderd keer en u heeft het bewijs dat de markt mist.",
+ ft1:"<b>Alleen voorbeelddata.</b> Elke patiënt, klachtenscore en gemodelleerde schatting op deze pagina is verzonnen voor het concept en mag niet als resultaat worden gepresenteerd. Productnamen, fabrikanten en energiedichtheden komen uit de door de fabrikanten gepubliceerde Nederlandse productinformatie; over geen van deze producten wordt een uitspraak over verdraagzaamheid gedaan.",
+ ft2:"Een studentenconcept voor de UMIO Innovation Challenge · Universiteit Maastricht · Pijler 3 van het Nuvante-storyboard. Geen Nuvante-product, geen medisch advies en geen juridisch of regulatoir oordeel.",
+ /* dynamic */
+ syms:["Diarree","Opgeblazen gevoel","Misselijkheid","Braken","Buikpijn"],lvl:["Geen","Licht","Matig","Ernstig"],
+ dow:["maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag","zondag"],
+ yrs:"jaar",day:"Dag",feed:"Voeding van vandaag",vol:"Gegeven volume, % van plan",sym:"Klachten vandaag",
+ save:"Opslaan",saved:"Opgeslagen",note:"Geen advies, geen meldingen. Alleen vastleggen.",
+ tabs:["Vandaag","Overzicht","Samenvatting"],streak:n=>`${n} dagen op rij`,
+ hist:"Laatste 14 dagen",histnone:"Nog niets ingevuld.",tapmore:"Tik op een dag voor details",
+ sumt:"Deze maand tot nu toe",total:"Totaal",volume:"Volume",
+ k1:"Dagen ingevuld",k2:"Gebruikelijke dagscore",k3:"Dagen met braken",
+ sumtmed:"de middelste dag van de maand",sumtof:"van de",
+ sumnote:"Een verslag van wat u zag, geen advies. Uw diëtist bepaalt wat het betekent.",
+ toast:n=>`Dag ${n} opgeslagen.`,seech:"Bekijk de grafiek",
+ n_sem:"Langdurige sondevoeding, neurologische aandoening",n_fleur:"Hogere energiebehoefte, zelfde productfamilie",
+ n_daan:"Gewisseld na herhaalde onderbrekingen",n_noor:"Geen verbetering na de wissel",
+ nochange:" · geen verschil",heroday:(a,b)=>`dag ${a} van ${b}`,
+ t1:"Gemiddelde klachtenscore",t1d:"per dag, van de 15",t2:"Gegeven deel van het plan",t2d:"gemiddeld per dag",
+ t3:"Dagen met braken",t3d:(a,b)=>`van de ${a} en ${b} dagen`,
+ dsub:(note,a,b,day,n)=>`${note} · ${a} → ${b} op dag ${day} · ${n} dagen ingevuld`,
+ cols:["Dag","Voeding","","","","","","Totaal","Volume"],
+ tblcount:(a,b)=>`${a} van de ${b} ingevulde dagen getoond. Klik op een kolomkop om te sorteren.`,
+ lg_mix:"geen · licht · matig · ernstig",lg_mixn:"Paarse lijn: de dag van de wissel.",
+ lg_score:"Dagtotaal over vijf klachten, 0–15",lg_scoren:"Streepjes: gemiddelde per periode. Paarse lijn: de wissel.",
+ lg_vol:"Deel van het geplande volume dat echt is gegeven",
+ lg_before:"vóór de wissel",lg_after:"na de wissel",
+ lg_chgn:"Het getal rechts is de verschuiving in het gemiddelde. Een stip verder naar links is beter.",
+ ag_l1:"Nuvacal",ag_l2:"Andere producten",ag_l3:"Balk: 95%-interval. Stip: gemodelleerd gemiddelde. Lager is beter.",
+ cats:[["all","Alle 19"],["standard","Standaard 1,0"],["energy","Energierijk"],["plant","Plantaardig"],["food","Voedingsmiddelen"],["paed","Pediatrisch"]],
+ wk:n=>n+" weken",
+ agA:(n,o)=>`Bij <b>${n}</b> patiënten per product overlapt het interval van Nuvacal 1.3 geen van de andere ${o} meer. Dat is ongeveer de omvang die een directe vergelijking zou vragen — en die financiert niemand.`,
+ agB:(n,o)=>`Bij <b>${n}</b> patiënten per product overlapt <b>elk</b> van de andere ${o} intervallen dat van Nuvacal 1.3 nog steeds. Niets is hier van iets anders te onderscheiden.`,
+ agC:(n,v,o)=>`Bij <b>${n}</b> patiënten per product overlappen <b>${v} van de andere ${o}</b> intervallen dat van Nuvacal 1.3 nog. Het onderscheidt zich van ${o-v}; de rest blijft ononderscheidbaar.`,
+ agD:n=>`Bij <b>${n}</b> patiënten per product is het 95%-interval ±${(1.96*2.5/Math.sqrt(n)).toFixed(2)} punten breed. Kies <b>Alle 19</b> om met Nuvacal 1.3 te vergelijken.`,
+ /* ── hoofd-hals / bovenste GI-kanker ── */
+ lede:"Patiënten met sondevoeding tijdens chemoradiatie reageren verschillend op dezelfde voeding. Zij leggen klachten, inname en gewicht vast in minder dan een minuut per dag, en de diëtist ziet eindelijk welke voeding iemand verdraagt — in een vorm die ook het behandelteam en de inkoop kunnen lezen.",
+ nav5:"De pilot",nav7:"Waarom gewicht",nav8:"Volhouden",
+ pr_s:"Uit onze interviews met Nederlandse behandelaars en diëtisten, en uit het inkooponderzoek daarachter.",
+ pr_2p:"Misselijkheid, braken, reflux, een opgeblazen gevoel en diarree worden in verschillende systemen genoteerd en zelden teruggekoppeld aan de voeding die ze veroorzaakte.",
+ pop_h:"De groep die we werkelijk bereiken",
+ pop_1:"nieuwe diagnoses hoofd-halskanker per jaar in Nederland",
+ pop_2:"daarvan krijgt sondevoeding tijdens chemoradiatie",
+ pop_2e:"onze schatting; het aandeel radiotherapie is nog niet geverifieerd",
+ pop_3:"centra behandelen vrijwel allemaal, dus een handvol diëtistenteams bereikt het hele land",
+ pop_4:"per jaar in het Antoni van Leeuwenhoek, ons voorgestelde eerste centrum",
+ pop_n:"Dit gaat om bewijs, niet om volume. De groep is klein genoeg om goed te onderzoeken en geconcentreerd genoeg om te bereiken.",
+ q1:"Er is niet één merk dat we altijd gebruiken … het is echt patiëntafhankelijk.",c1:"MDL-arts, Amsterdam UMC · teaminterview, 2026",
+ q2:"Het zou waardevol zijn om meer data te hebben over welke patiënten sondevoeding nodig hebben omdat ze ondervoed zijn.",c2:"Diëtist, UMCG · teaminterview, 2026",
+ wt_e:"Waarom gewicht",wt_h:"Het getal waar iedereen al naar handelt en dat bijna niemand vastlegt",
+ wt_s:"Verdraagzaamheid is het mechanisme. Gewicht is de uitkomst. Het dagboek is het eerste dat beide tegelijk vasthoudt, en daarom hoort gewicht erin.",
+ wt_1h:"Het begint vóór de behandeling",
+ wt_1p:"Eén op de vijf patiënten met hoofd-halskanker heeft bij de diagnose al kritiek gewichtsverlies, en bij tumoren lager in de keel meer dan vier op de tien. Meer dan de helft van de patiënten zonder uitzaaiingen is al afgevallen bij het eerste oncologiebezoek.",
+ wt_1e:"Jager-Wittenaar e.a. 2007 (UMCG, 407 patiënten); Muscaritoli e.a. 2017 (PreMiO)",
+ wt_2h:"De behandeling maakt het erger",
+ wt_2p:"Tot 88% van de patiënten met hoofd-halskanker kan ondervoed raken tijdens chemoradiatie. Van alle kankerpatiënten overlijdt mogelijk 20 tot 30% aan de gevolgen van ondervoeding in plaats van aan de kanker zelf.",
+ wt_2e:"Löser e.a. 2024 (SUFEETUBE); Caccialanza e.a. 2020",
+ wt_3h:"Gewichtsverlies verandert de behandeling",
+ wt_3p:"Bij patiënten die afvallen is de kans 1,3 tot 1,7 keer groter dat de systemische behandeling wordt aangepast. Op dat moment is voeding geen ondersteunende zorg meer, maar iets dat de kans op genezing beïnvloedt.",
+ wt_3e:"Shaw e.a. 2020",
+ wt_4h:"Vroeg voeden beschermt allebei",
+ wt_4p:"Patiënten met hoofd-halskanker die vóór de behandeling met sondevoeding begonnen verloren 2,4% van hun gewicht tegenover 15,2% zonder sonde, en voltooiden 96% van hun chemotherapie tegenover 81,7%. Ook minder spoedbezoeken.",
+ wt_4e:"Lewis e.a. 2014",
+ wt_5h:"Maar alleen als de voeding verdragen wordt",
+ wt_5p:"Ongeveer 40% van de kankerpatiënten met sondevoeding haalt de eiwit- en energiedoelen alsnog niet, en 30,5% van de IC-patiënten met sondevoeding krijgt voedingsintolerantie. Een voorgeschreven voeding is nog geen gegeven voeding.",
+ wt_5e:"De Souza e.a. 2018; IC-cohort naar enterale voedingsintolerantie",
+ wt_6h:"En bijna niemand meet het",
+ wt_6p:"77% van de Duitse hoofd-halsartsen screent voeding niet standaard vóór chemoradiatie. De keten hierboven is goed onderbouwd en nauwelijks gemeten. Een wekelijks gewicht en een dagelijkse klachtenscore dichten dat gat voor vrijwel niets.",
+ wt_6e:"Löser e.a. 2024",
+ wt_lh:"Eén ding dat we bewust hebben weggelaten",
+ wt_lp:"Diëtisten letten op 5% verlies, want daar beginnen de criteria voor ondervoeding. We hebben overwogen die lijn in de gewichtsgrafiek te tekenen en het niet gedaan. Een grenswaarde is een vergelijking met een norm, en dat is één van de vier dingen die van dit verslag gereguleerde klinische software zouden maken. De grafiek toont het gewicht en het procentuele verschil; de diëtist weet waar de grens ligt.",
+ lg_s:"Een werkend prototype. Vul een dag in en open daarna Overzicht en Samenvatting onderaan om te zien wat de patiënt terugkrijgt.",
+ st1h:"De patiënt legt vast, niet de diëtist",
+ st1p:"Zij is het knelpunt dat dit hulpmiddel juist wil verlichten, dus het kost haar geen extra tijd. Een patiënt in chemoradiatie let al op deze klachten, en in de zwaarste weken kan een partner het invullen.",
+ st2p:"Nutrison en Nutrison Protein Plus van Nutricia; Isosource en Compleat van Nestlé Health Science; Fresubin en NutriChef van Fresenius Kabi; en Nuvacal. Een dagboek dat alleen de voeding van één fabrikant vastlegt is een marketingmiddel. Eén dat ze allemaal vastlegt is een klinisch instrument, en alleen het tweede overtuigt een inkoopteam.",
+ st4p:"Geen meldingen, geen risicoscores, geen voorgestelde voeding en geen grenswaardelijn in de gewichtsgrafiek. Juist die terughoudendheid maakt het een verslag in plaats van klinische software, en dat is een bewuste keuze, geen ontbrekende functie.",
+ st5p:"De waarde zit in de gestandaardiseerde manier van vastleggen, niet in de software. Een geprinte weekkaart bewijst hetzelfde voor een fractie van de kosten, en dat is wat een eerste pilot echt kan uitvoeren.",
+ m_vol:"Volume en inname",m_wt:"Gewicht",
+ lg_tube:"via sonde",lg_mouth:"via de mond",
+ lg_voln:"Beide als aandeel van wat gepland of normaal was. Streepjes: gemiddelde per periode voor de sonde. Paarse lijn: de wissel.",
+ lg_wt:"gewicht, kg",lg_wtn:"Wekelijks gewogen. Streepjes: startgewicht. Bewust geen grenswaardelijn.",
+ wt_base:"start",wtshort:"Gewicht",wtlab:"Gewicht vandaag, kg",wtnote:"Weegdag — één keer per week is genoeg.",
+ oral:"Via de mond gelukt, % van normaal",
+ t4:"Gewicht",t4d:"start tot laatst ·",t5:"Via de mond",t5d:"gemiddeld per dag",
+ cols:["Dag","Voeding","","","","","","Totaal","Sonde","Mond","Gewicht"],
+ syms:["Misselijkheid","Braken","Reflux","Opgeblazen gevoel","Diarree"],
+ week:n=>`Week ${n} van 7`,
+ k1:"Dagen ingevuld",k1d:"in de kuur van zeven weken",
+ k2:"Gebruikelijke dagscore",k4:"Via sonde gegeven",k4d:"gemiddeld deze week, % van plan",
+ k5:"Laatste gewicht",k5d:"sinds uw start",
+ sumt:"Uw week",sumtmed:"de middelste dag van deze week",
+ sumnote:"Een verslag van wat u zag, geen advies. Neem het mee naar uw afspraak — uw diëtist bepaalt wat het betekent.",
+ n_joost:"Larynxkanker, chemoradiatie, neus-maagsonde",
+ n_annelies:"Slokdarmkanker, voedingsjejunostomie na operatie",
+ n_ruud:"Maagkanker na maagresectie",
+ n_fatima:"Orofarynxkanker, chemoradiatie",
+ kp_e:"Volhouden",kp_h:"Apps in de zorg sterven aan afhaken, niet aan afwijzing",
+ kp_s:"Zeven weken chemoradiatie is lang om iets te vragen van iemand met een pijnlijke mond. Dit zijn de knoppen waar we op zouden vertrouwen, de sterkste eerst. De goedkoopste zijn ook de beste.",
+ kp_1h:"Twintig seconden per dag",
+ kp_1p:"Saai, en veruit de grootste knop die er is. Elk extra veld kost therapietrouw. Bij mensen met mucositis en vermoeidheid weegt dit zwaarder dan elke slimme vondst, en daarom bestaat de dagelijkse invoer uit vijf tikken en twee schuifjes.",
+ kp_2h:"Uw diëtist ziet dit donderdag",
+ kp_2p:"Verantwoording binnen een echte behandelrelatie verslaat elk puntensysteem. Deze patiënten komen tijdens de behandeling wekelijks op de poli, dus het overzicht komt de avond vóór de afspraak en wordt waar zij bij zijn geopend.",
+ kp_3h:"Uw zeven weken worden het bewijs voor de volgende patiënt",
+ kp_3p:"Kankerpatiënten zeggen consequent dat ze willen dat hun ervaring ergens toe dient. Hier is dat letterlijk waar: deze groep is klein, en een paar dozijn volledige dossiers is het verschil tussen een mening en een bevinding.",
+ kp_4h:"Week 4 van 7, geen reeks",
+ kp_4p:"Voortgang die samenvalt met de behandeling die ze willen afmaken. Een strakke reeks doet het omgekeerde: breek hem op een slechte dag en mensen stoppen, en hier is een slechte dag een ziekteverschijnsel. Niets in de app spreekt iemand ooit vermanend toe.",
+ kp_5h:"De data zelf als beloning",
+ kp_5p:"Na twee weken is er genoeg om iemand zijn eigen patroon te laten zien. Zelfkennis is de meest duurzame motivatie die er is, en weggeven kost niets.",
+ kp_6h:"Een herinnering op een zelfgekozen tijd",
+ kp_6p:"Onspectaculair en zeer effectief. Gekozen door de patiënt, niet door ons, en zonder schuldgevoel uit te zetten.",
+ kp_7h:"Een prijstrekking",
+ kp_7p:"De moeite waard, maar als laatste op deze lijst en niet als eerste. Externe beloningen werken op korte termijn en kunnen de intrinsieke motivatie hierboven verdringen. Het is ook het enige punt hier dat eerst goedkeuring nodig heeft.",
+ b_ok:"Geen goedkeuring nodig",b_warn:"Juridische en ethische toets",
+ kp_rh:"Vier dingen om te regelen vóór de trekking draait",
+ kp_r1:"<b>Het kan kwantiteit boven nauwkeurigheid belonen.</b> Tel alleen volledige dagentries, één per dag, met een tijdstempel zodat achteraf ingevulde dagen zichtbaar zijn.",
+ kp_r2:"<b>Een door de fabrikant betaalde prijs oogt als marketing.</b> Laat de trekking via het ziekenhuis of een onafhankelijke partij lopen, en houd het dagboek merkonafhankelijk zodat deelname nooit vastzit aan het gebruik van een Nuvacal-product.",
+ kp_r3:"<b>Promotionele prijstrekkingen zijn in Nederland gereguleerd,</b> en de promotie van medische voeding ook. Beide vragen een juridische toets vóór de start.",
+ kp_r4:"<b>Kansen die stijgen met het aantal entries is precies de vorm waar een toetsingscommissie vragen bij stelt.</b> Een vergoeding hoort tijd en moeite te dekken, niet tot deelname te verleiden, en deze groep is kwetsbaar. Een vast bedankje voor iedereen die de pilot afmaakt, of een donatie per voltooide week aan een patiëntenfonds, bereikt bijna hetzelfde zonder dat bezwaar.",
+ kp_th:"Beter nog: toets de prikkel in plaats van hem aan te nemen",
+ kp_tp:"Loot de helft van de patiënten in op de trekking en meet in beide groepen het aantal ingevulde dagen. U komt uit op twee bevindingen in plaats van één: de verdraagzaamheidsdata, en een echt antwoord op de vraag wat patiënten tijdens chemoradiatie aan het invullen houdt. Dat tweede is publiceerbaar, nuttig voor het vakgebied, en het ontkracht het marketingbezwaar, omdat u de prikkel onderzoekt in plaats van hem in te zetten.",
+ kp_tq:"<b>En behandel stilte als data.</b> Iemand die stopt met invullen is misschien gewoon erg ziek, en dat is het weten waard. De pagina van de diëtist toont wanneer een patiënt voor het laatst invulde — een feitelijke weergave, geen melding, wat het aan de goede kant houdt van de grens die hieronder staat beschreven.",
+ op_s:"Dezelfde dagelijkse gegevens beantwoorden een andere vraag voor elk van de vier mensen die bepalen of een voeding in het ziekenhuis blijft.",
+ o1f:"Voor de patiënt",o1h:"Iets terug voor de moeite",
+ o1l:"<li>Een weekoverzicht in gewone taal</li><li>Iets om donderdag mee te nemen naar de afspraak</li><li>Een reden om in week vijf nog steeds in te vullen</li>",
+ o2l:"<li>Verdraagzaamheid en gewicht per patiënt, op één pagina</li><li>Een verslag voor het multidisciplinair overleg</li><li>Minder gissen als een voeding moet wisselen</li>",
+ o4f:"Voor het behandelteam",o4h:"Voeding zichtbaar in het behandeldossier",
+ o4l:"<li>Gewichtsverloop naast verdraagzaamheid, week voor week</li><li>Vroeg zicht op de patiënten die terrein verliezen</li><li>De variabele die de behandeling verandert, gemeten</li>",
+ o3l:"<li>Klachtendagen per patiëntmaand</li><li>Deel van het geplande volume dat echt is gegeven</li><li>Gewicht behouden, onderbrekingen voorkomen</li>",
+ mo_h:"Wat het waard is, in euro's",
+ mo_1:"per jaar: de kosten van onbehandelde ondervoeding in de Nederlandse zorg, inclusief verlies aan werk en kwaliteit van leven (€356 mln direct)",
+ mo_2:"levert elke €1 op die in het ziekenhuis aan de behandeling van ondervoeding wordt besteed",
+ mo_3:"en 1,4 extra ligdagen, per ondervoede patiënt",
+ mo_4:"van de spoedbezoeken door hoofd-halspatiënten tijdens en na chemoradiatie was voedingsgerelateerd",
+ mo_n:"Cijfers uit een Nederlandse gezondheidseconomische analyse uit 2024 (Nuijten, A2M) en Lewis e.a. 2014. Prijs per fles is de verkeerde maat; dit is de maat waar de inkoop iets mee kan.",
+ pl_e:"De pilot",
+ pl_1h:"Het AvL ziet er zo'n 300 per jaar, dus 30 tot 50 is een realistisch eerste cohort.",
+ pl_2h:"Zeven weken chemoradiatie plus herstel. Het gewicht blijft bewegen nadat de behandeling klaar is.",
+ pl_o4:"Wegingen vastgelegd",pl_o4d:"Eén per week per patiënt, de uitkomst die het oncologieteam leest",
+ av_h:"Waarom eerst het Antoni van Leeuwenhoek",
+ av_p:"Het AvL is het gespecialiseerde kankerziekenhuis van Nederland en één van de acht hoofd-halsoncologiecentra. Jaarlijks hebben daar ongeveer 905 nieuw gediagnosticeerde patiënten te maken met serieuze sondevoedingsbehoefte: ruim 600 met hoofd-halskanker, 186 met slokdarmkanker en 119 met maagkanker. Het stelt zelf dat kankerzorg over meer gaat dan overlevingscijfers, en onderbouwt dat met een Centrum voor Kwaliteit van Leven waarin 14 klinische disciplines samenkomen, waaronder oncologiediëtisten en logopedisten.",
+ av_p2:"Een gericht ziekenhuis dat kwaliteit van leven al meet koopt eerder op uitkomst dan een groot netwerk dat op volume koopt. De ingang is de diëtist, niet de patiënt: zij geeft toegang mee zodra de sondevoeding begint.",
+ av_1b:"Klaar voor value-based inkoop",av_1s:"Kwaliteit van leven is een strategisch doel met een eigen afdeling, dus uitkomsten kunnen de keuze bepalen in plaats van de stuksprijs.",
+ av_2b:"Het juiste team op één plek",av_2s:"Diëtisten, logopedisten en psychologen werken al naast elkaar — natuurlijke gebruikers van één gedeeld verslag.",
+ av_3b:"Passend bij het product",av_3s:"Een energie- en eiwitrijke voeding plus verdraagzaamheidsdata geeft het centrum bewijs dat het toch al wil verzamelen.",
+ av_4b:"Daarna het netwerk",av_4s:"Na één gedocumenteerde pilot bereikt het hoofd-halsdiëtistennetwerk de andere 13 centra. België is het logische volgende land; Duitsland daarna.",
+ qu_h:"Vijf dingen die eerst moeten kloppen",
+ d5s:"Is hier een ethische toetsing voor nodig?",
+ d5b:"<p>Het ziekenhuis beslist, en dat gesprek moet gevoerd zijn vóórdat er iemand wordt geïncludeerd.</p><p>Een project dat routinezorgdata verzamelt om de zorg te verbeteren valt vaak <b>niet-WMO</b> — buiten de Wet medisch-wetenschappelijk onderzoek met mensen — omdat patiënten geen ingreep ondergaan en geen gedrag opgelegd krijgen. De voeding wordt door de diëtist gekozen zoals dat toch al zou gebeuren; het dagboek legt vast wat er gebeurde.</p><p><b>Twee dingen veranderen dat antwoord.</b> Invullen verplichten als onderzoekshandeling begint op opgelegd gedrag te lijken. En een prikkel toevoegen, zeker een gelote, maakt het project een onderzoek naar gedrag in plaats van een verslag van zorg. Als de prijstrekking doorgaat in de vorm hierboven, ga er dan van uit dat de vraag opnieuw gesteld moet worden.</p><p>De volgorde is dus: vraag het researchbureau of de METC van het AvL eerst om een niet-WMO-verklaring, leg de verwerkersafspraken vast met het ziekenhuis als verwerkingsverantwoordelijke, en ontwerp pas daarna de prikkel. Andersom kost maanden.</p>",
+ d4b:"<p>Precies dat, en zichtbaar. Open in het datagedeelte hierboven <b>Ruud</b>: hij stapte over op een Nuvacal-product, zijn klachten verbeterden niet en zijn gewicht bleef dalen. <b>Fatima</b> wisselde naar een energierijke voeding en ook daar veranderde niets.</p><p>Twee van de vier voorbeeldpatiënten laten geen voordeel zien, en dat is bewust. Een dagboek dat alleen goed nieuws oplevert is voor een diëtist waardeloos, en een inkoopteam prikt daar meteen doorheen. Dat de mislukkingen erin blijven staan maakt de rest juist leesbaar.</p>",
+ cats:[["all","Alle 19"],["standard","Standaard 1,0"],["energy","Energierijk"],["protein","Eiwitrijk"],["plant","Plantaardig"],["food","Voedingsmiddelen"]],
+ ag_s:"Negentien volledige sondevoedingen voor volwassenen die in Nederland verkrijgbaar zijn, naast elkaar gemodelleerd. Schuif met de slider om te zien hoeveel patiënten nodig zijn voordat er één van de andere te onderscheiden is.",
+ cl_h:"Begin met één centrum, één patiëntengroep, één vraag.",
+ cl_p:"Verdraagt deze patiënt deze voeding beter dan de vorige, en hield het gewicht stand? Beantwoord dat een paar honderd keer en u heeft het bewijs dat de markt mist.",
+ /* ── herzieningen ── */
+ m_vol:"Gegeven volume",
+ cols:["Dag","Voeding","","","","","","Totaal","Volume","Gewicht"],
+ op_s:"Dezelfde dagelijkse gegevens beantwoorden een andere vraag voor elk van de drie mensen die bepalen of een voeding in het ziekenhuis blijft.",
+ kp_3p:"Deze groep is klein genoeg dat een paar dozijn volledige dossiers veranderen wat erover bekend is. Dat iemand eerlijk vertellen geeft hem een reden om door te gaan die niets met een prijs te maken heeft, en anders dan de meeste van zulke beloften klopt die hier.",
+ kp_r3:"<b>Promotionele prijstrekkingen zijn in Nederland gereguleerd,</b> en de promotie van medische voeding ook — twee aparte toetsen. Waar u het kunt vragen: de juridische afdeling van het AvL en de juridische dienst van de Universiteit Maastricht, die voor u als studenten gratis is, voor de trekking zelf; de Gedragscode Promotionele Kansspelen voor de regels waaraan een promotionele trekking moet voldoen, met de Kansspelautoriteit daarachter; en de Keuringsraad (KOAG/KAG), die reclame voor gezondheidsproducten toetst, voor alles wat als claim leest. Vraag het vóórdat er iets gedrukt wordt, niet erna.",
+};
+
+const DICT={en:EN,nl:NL};
+let lang="en";
+const L=()=>DICT[lang];
+const SYMS=EN.syms;
+
+const tot=r=>r.s.reduce((a,b)=>a+b,0);
+const mean=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+const sevVar=l=>l===0?"var(--sev-0)":l===1?"var(--sev-1)":l===2?"var(--sev-2)":"var(--sev-3)";
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+let current=PATIENTS[0], metric="score", draft=[0,0,0,0,0], vol=92, feedSel=null;
+const lastWeight=p=>{const w=p.days.map(r=>r.w).filter(x=>x!=null);return w[w.length-1]};
+let weight=lastWeight(PATIENTS[0]);
+let sortKey="day", sortDir=1, tFilter="all", phoneTab="today", openDay=-1, aggCat="all";
+
+/* ═══ charts ═══ */
+function buildTime(p,o){
+  o=Object.assign({slot:26,plotH:172,mode:"score",upto:p.days.length,labels:true,dark:false,span:null,rowH:26},o);
+  const rows=p.days.slice(0,o.upto), n=rows.length, span=o.span||n;
+  const PL=o.mode==="mix"?104:(o.labels?48:40), PR=16, SL=o.slot;
+  const W=PL+span*SL+PR, plotT=22, plotB=plotT+o.plotH, axisB=plotB+22;
+  const rowH=o.rowH, H=o.mode==="mix"?plotT+5*rowH+30:axisB+4;
+  const ink=o.dark?"rgba(243,246,239,.62)":"var(--ink-3)", ink2=o.dark?"rgba(243,246,239,.9)":"var(--ink-2)";
+  const grid=o.dark?"rgba(243,246,239,.17)":"var(--line)";
+  const sw=p.switchDay-1, tick=i=>i===0||(i+1)%7===0||i===span-1;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" tabindex="0" style="font-family:var(--f-ui)" aria-label="${esc(p.name)}, ${n} days.">`;
+  if(o.mode==="mix"){
+    for(let si=0;si<5;si++){const ry=plotT+si*rowH;
+      s+=`<text x="${PL-10}" y="${ry+rowH/2+4}" text-anchor="end" font-size="11.5" fill="${ink2}">${L().syms[si]}</text>`;
+      rows.forEach((r,i)=>{s+=`<rect x="${PL+i*SL+1.5}" y="${ry+3}" width="${SL-3}" height="${rowH-6}" rx="3" fill="${sevVar(r.s[si])}"/>`;});}
+    const by=plotT+5*rowH;
+    for(let i=0;i<span;i++)if(tick(i))s+=`<text x="${PL+i*SL+SL/2}" y="${by+15}" text-anchor="middle" font-size="10.5" font-family="var(--f-mono)" fill="${ink}">${i+1}</text>`;
+    if(sw>0&&sw<span)s+=`<line x1="${PL+sw*SL}" y1="${plotT-4}" x2="${PL+sw*SL}" y2="${by+2}" stroke="var(--violet)" stroke-width="1.5"/>`;
+  } else {
+    const MAX=o.mode==="score"?15:100, ticks=o.mode==="score"?[0,5,10,15]:[0,25,50,75,100];
+    const y=v=>plotB-(v/MAX)*o.plotH;
+    ticks.forEach(v=>{s+=`<line x1="${PL}" y1="${y(v)}" x2="${W-PR}" y2="${y(v)}" stroke="${grid}" stroke-width="1"/>`+
+      `<text x="${PL-9}" y="${y(v)+4}" text-anchor="end" font-size="10.5" font-family="var(--f-mono)" fill="${ink}">${v}${o.mode==="volume"?"%":""}</text>`;});
+    if(sw>0&&sw<span)s+=`<line x1="${PL+sw*SL}" y1="${plotT-16}" x2="${PL+sw*SL}" y2="${plotB}" stroke="var(--violet)" stroke-width="1.5"/>`;
+    const val=r=>o.mode==="score"?tot(r):r.v;
+    [[0,Math.min(sw,n),p.feedA],[Math.max(sw,0),n,p.feedB]].forEach(([a,b,lab])=>{
+      if(b<=a)return;
+      const x1=PL+a*SL,x2=PL+b*SL,m=mean(rows.slice(a,b).map(val));
+      if(o.labels)s+=`<text x="${x1+3}" y="${plotT-7}" font-size="11" font-weight="600" fill="${ink2}">${esc(short(lab))}</text>`;
+      s+=`<line x1="${x1+2}" y1="${y(m)}" x2="${x2-4}" y2="${y(m)}" stroke="${o.dark?"rgba(243,246,239,.75)":"var(--ink)"}" stroke-width="1.5" stroke-dasharray="5 4" opacity=".6"/>`;
+      s+=`<text x="${(x1+x2)/2}" y="${y(m)-7}" text-anchor="middle" font-size="10.5" font-weight="600" font-family="var(--f-mono)" fill="${ink2}">${o.mode==="score"?"⌀ "+m.toFixed(1):Math.round(m)+"%"}</text>`;});
+    if(o.mode==="score"){
+      rows.forEach((r,i)=>{const t=tot(r),h=Math.max(t>0?2.5:0,(t/MAX)*o.plotH);
+        if(t>0)s+=`<rect x="${PL+i*SL+3}" y="${plotB-h}" width="${SL-6}" height="${h}" rx="3" fill="var(--sev-3)"/>`;});
+    } else if(rows.length){
+      const pts=rows.map((r,i)=>[PL+i*SL+SL/2,y(r.v)]);
+      s+=`<path d="M${pts[0][0]},${plotB} `+pts.map(q=>`L${q[0]},${q[1]}`).join(" ")+` L${pts[pts.length-1][0]},${plotB} Z" fill="var(--green)" opacity=".12"/>`;
+      s+=`<path d="M`+pts.map(q=>`${q[0]},${q[1]}`).join(" L")+`" fill="none" stroke="var(--green)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+      const e=pts[pts.length-1];
+      s+=`<circle cx="${e[0]}" cy="${e[1]}" r="4.5" fill="var(--green)" stroke="var(--surface)" stroke-width="2"/>`;
+}
+    for(let i=0;i<span;i++)if(tick(i))s+=`<text x="${PL+i*SL+SL/2}" y="${axisB-6}" text-anchor="middle" font-size="10.5" font-family="var(--f-mono)" fill="${ink}">${i+1}</text>`;
+  }
+  rows.forEach((_,i)=>{s+=`<rect class="hit" data-i="${i}" x="${PL+i*SL}" y="0" width="${SL}" height="${H}" fill="transparent" style="cursor:crosshair"/>`;});
+  return s+"</svg>";
+}
+
+/* Weight. Weigh-ins are weekly, so only eight points carry a value.
+   Deliberately no 5% threshold line — see "Why weight" on the page. */
+function buildWeight(p){
+  const pts=p.days.map((r,i)=>r.w==null?null:[i,r.w]).filter(Boolean);
+  const span=p.days.length, SL=19, PL=56, PR=58, plotT=26, plotH=168;
+  const W=PL+span*SL+PR, plotB=plotT+plotH, axisB=plotB+22, H=axisB+4;
+  const vals=pts.map(q=>q[1]), lo=Math.floor(Math.min(...vals)-1), hi=Math.ceil(Math.max(...vals)+1);
+  const x=i=>PL+i*SL+SL/2, y=v=>plotB-((v-lo)/(hi-lo))*plotH;
+  const base=vals[0], last=vals[vals.length-1], pct=(last-base)/base*100;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" tabindex="0" style="font-family:var(--f-ui)" aria-label="${esc(p.name)} weight over ${span} days.">`;
+  for(let v=lo;v<=hi;v++){
+    s+=`<line x1="${PL}" y1="${y(v)}" x2="${W-PR}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/>`;
+    s+=`<text x="${PL-9}" y="${y(v)+4}" text-anchor="end" font-size="10" font-family="var(--f-mono)" fill="var(--ink-3)">${v}</text>`;}
+  const sw=p.switchDay-1;
+  if(sw>0&&sw<span)s+=`<line x1="${PL+sw*SL}" y1="${plotT-16}" x2="${PL+sw*SL}" y2="${plotB}" stroke="var(--violet)" stroke-width="1.5"/>`;
+  s+=`<line x1="${PL}" y1="${y(base)}" x2="${W-PR}" y2="${y(base)}" stroke="var(--ink-3)" stroke-width="1.5" stroke-dasharray="5 4" opacity=".5"/>`;
+  s+=`<text x="${PL+4}" y="${y(base)-7}" font-size="10.5" font-family="var(--f-mono)" fill="var(--ink-2)">${L().wt_base} ${base.toFixed(1)}</text>`;
+  s+=`<path d="M`+pts.map(q=>`${x(q[0])},${y(q[1])}`).join(" L")+`" fill="none" stroke="var(--sev-3)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+  pts.forEach(q=>{s+=`<circle cx="${x(q[0])}" cy="${y(q[1])}" r="4.5" fill="var(--sev-3)" stroke="var(--surface)" stroke-width="2"><title>${L().day} ${q[0]+1}: ${q[1].toFixed(1)} kg</title></circle>`;});
+  const e=pts[pts.length-1];
+  s+=`<text x="${x(e[0])+10}" y="${y(e[1])+4}" font-size="11.5" font-weight="600" font-family="var(--f-mono)" fill="var(--sev-3)">${pct>0?"+":""}${pct.toFixed(1)}%</text>`;
+  for(let i=0;i<span;i++)if(i===0||(i+1)%7===0||i===span-1)
+    s+=`<text x="${x(i)}" y="${axisB-6}" text-anchor="middle" font-size="10.5" font-family="var(--f-mono)" fill="var(--ink-3)">${i+1}</text>`;
+  return s+"</svg>";
+}
+
+function buildChange(p){
+  const pre=p.days.slice(0,p.switchDay-1), post=p.days.slice(p.switchDay-1);
+  const PL=126,PR=58,plotW=300,W=PL+plotW+PR,rowH=40,top=46,H=top+5*rowH+34;
+  const x=v=>PL+(v/3)*plotW;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" style="font-family:var(--f-ui)" aria-label="Mean per symptom before and after.">`;
+  [0,1,2,3].forEach(v=>{s+=`<line x1="${x(v)}" y1="${top-12}" x2="${x(v)}" y2="${top+5*rowH-18}" stroke="var(--line)" stroke-width="1"/>`+
+    `<text x="${x(v)}" y="${top-20}" text-anchor="middle" font-size="10" fill="var(--ink-3)">${L().lvl[v]}</text>`;});
+  for(let i=0;i<5;i++){
+    const y=top+i*rowH, a=mean(pre.map(r=>r.s[i])), b=mean(post.map(r=>r.s[i])), dd=b-a;
+    s+=`<text x="${PL-14}" y="${y+4}" text-anchor="end" font-size="11" fill="var(--ink-2)">${L().syms[i]}</text>`;
+    s+=`<line x1="${x(a)}" y1="${y}" x2="${x(b)}" y2="${y}" stroke="var(--ink-3)" stroke-width="2" opacity=".45" stroke-linecap="round"/>`;
+    s+=`<circle cx="${x(a)}" cy="${y}" r="6" fill="var(--surface)" stroke="var(--ink-3)" stroke-width="2"><title>${L().syms[i]}: ${a.toFixed(2)}</title></circle>`;
+    s+=`<circle cx="${x(b)}" cy="${y}" r="6" fill="var(--sev-3)" stroke="var(--surface)" stroke-width="2"><title>${L().syms[i]}: ${b.toFixed(2)}</title></circle>`;
+    s+=`<text x="${W-PR+12}" y="${y+4}" font-size="11" font-weight="600" font-family="var(--f-mono)" fill="${Math.abs(dd)<.15?"var(--ink-3)":"var(--ink-2)"}">${dd>0?"+":dd<0?"−":"±"}${Math.abs(dd).toFixed(1)}</text>`;}
+  return s+"</svg>";
+}
+
+function buildScatter(p){
+  const PL=58,PR=18,PT=16,PB=40,W=430,H=270,plotW=W-PL-PR,plotH=H-PT-PB,Y0=60;
+  const x=v=>PL+(v/15)*plotW, y=v=>PT+plotH-((v-Y0)/(100-Y0))*plotH;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" style="font-family:var(--f-ui)" aria-label="Symptom score against volume delivered.">`;
+  [60,70,80,90,100].forEach(v=>{s+=`<line x1="${PL}" y1="${y(v)}" x2="${W-PR}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/>`+
+    `<text x="${PL-8}" y="${y(v)+4}" text-anchor="end" font-size="10" font-family="var(--f-mono)" fill="var(--ink-3)">${v}%</text>`;});
+  s+=`<text transform="translate(13,${PT+plotH/2}) rotate(-90)" text-anchor="middle" font-size="10.5" fill="var(--ink-3)">${lang==="nl"?"gegeven volume":"planned volume given"}</text>`;
+  [0,5,10,15].forEach(v=>s+=`<text x="${x(v)}" y="${H-PB+18}" text-anchor="middle" font-size="10" font-family="var(--f-mono)" fill="var(--ink-3)">${v}</text>`);
+  s+=`<text x="${PL+plotW/2}" y="${H-7}" text-anchor="middle" font-size="10.5" fill="var(--ink-3)">${lang==="nl"?"dagscore klachten, 0–15":"daily symptom score, 0–15"}</text>`;
+  p.days.forEach((r,i)=>{const before=i+1<p.switchDay,t=tot(r);
+    s+=`<circle cx="${x(t)}" cy="${y(Math.max(Y0,r.v))}" r="5.5" fill="${before?"var(--surface)":"var(--sev-3)"}" stroke="${before?"var(--ink-3)":"var(--surface)"}" stroke-width="2" opacity="${before?1:.92}">`+
+       `<title>${L().day} ${i+1} · ${t} · ${r.v}%</title></circle>`;});
+  return s+"</svg>";
+}
+
+function buildMini(p){
+  const n=p.days.length, SL=Math.max(4,Math.floor(196/n)), PAD=6, W=PAD*2+n*SL, plotH=54, H=plotH+8;
+  const sw=p.switchDay-1;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" style="font-family:var(--f-ui)" aria-label="${esc(p.name)}">`;
+  s+=`<line x1="${PAD}" y1="${plotH+2}" x2="${W-PAD}" y2="${plotH+2}" stroke="var(--line-2)" stroke-width="1"/>`;
+  if(sw>0&&sw<n)s+=`<line x1="${PAD+sw*SL}" y1="0" x2="${PAD+sw*SL}" y2="${plotH+2}" stroke="var(--violet)" stroke-width="1.5"/>`;
+  p.days.forEach((r,i)=>{const t=tot(r),h=Math.max(t>0?1.5:0,(t/15)*plotH);
+    if(t>0)s+=`<rect x="${PAD+i*SL+.75}" y="${plotH+2-h}" width="${SL-1.5}" height="${h}" rx="1.5" fill="var(--sev-3)"><title>${L().day} ${i+1}: ${t}/15</title></rect>`;});
+  return s+"</svg>";
+}
+
+const SD=2.5;
+function buildAgg(n,cat){
+  const list=AGG.filter(f=>cat==="all"||f.cat===cat).slice().sort((a,b)=>a.est-b.est);
+  const ci=1.96*SD/Math.sqrt(n);
+  const PL=196,PR=56,PT=38,rowH=25,W=PL+330+PR,H=PT+list.length*rowH+28,plotW=330;
+  const X0=2,X1=9, x=v=>PL+((v-X0)/(X1-X0))*plotW;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" style="font-family:var(--f-ui)" aria-label="Modelled means with 95% intervals, ${n} patients per product.">`;
+  for(let v=2;v<=9;v++){s+=`<line x1="${x(v)}" y1="${PT-14}" x2="${x(v)}" y2="${PT+list.length*rowH-14}" stroke="var(--line)" stroke-width="1"/>`+
+    `<text x="${x(v)}" y="${PT-22}" text-anchor="middle" font-size="10" font-family="var(--f-mono)" fill="var(--ink-3)">${v}</text>`;}
+  list.forEach((f,i)=>{
+    const y=PT+i*rowH, lo=Math.max(X0,f.est-ci), hi=Math.min(X1,f.est+ci);
+    const col=f.nuv?"var(--green)":"var(--ink-3)";
+    s+=`<text x="${PL-12}" y="${y+3}" text-anchor="end" font-size="10.5" font-weight="${f.nuv?600:400}" fill="${f.nuv?"var(--green)":"var(--ink-2)"}">${esc(f.s)}</text>`;
+    s+=`<line x1="${x(lo)}" y1="${y}" x2="${x(hi)}" y2="${y}" stroke="${col}" stroke-width="6" opacity="${f.nuv?.42:.24}" stroke-linecap="round"><title>${esc(f.n)} · ${f.est.toFixed(1)} (${lo.toFixed(1)}–${hi.toFixed(1)})</title></line>`;
+    s+=`<circle cx="${x(f.est)}" cy="${y}" r="${f.nuv?5.5:4}" fill="${col}" stroke="var(--surface)" stroke-width="1.5"/>`;
+    s+=`<text x="${W-PR+10}" y="${y+3.5}" font-size="10" font-family="var(--f-mono)" fill="var(--ink-3)">${f.k.toFixed(2)}</text>`;});
+  s+=`<text x="${W-PR+10}" y="${PT-22}" font-size="9" fill="var(--ink-3)">kcal/ml</text>`;
+  return s+"</svg>";
+}
+function aggRead(n,cat){
+  const list=AGG.filter(f=>cat==="all"||f.cat===cat);
+  const ci=1.96*SD/Math.sqrt(n), ref=AGG.find(f=>f.s==="Nuvacal 1.3");
+  const others=list.filter(f=>f!==ref);
+  const el=document.getElementById("agg-read");
+  if(!list.includes(ref)){el.innerHTML=L().agD(n);return;}
+  const ov=others.filter(f=>Math.abs(f.est-ref.est)<2*ci).length;
+  el.innerHTML=ov===0?L().agA(n,others.length):ov===others.length?L().agB(n,others.length):L().agC(n,ov,others.length);
+}
+
+function paintTime(host,p,o){
+  host.className="scroller"; host.innerHTML=buildTime(p,o)+'<div class="tip" role="status"></div>';
+  const svg=host.querySelector("svg"), tip=host.querySelector(".tip");
+  let idx=-1;
+  const show=i=>{
+    const r=p.days[i]; if(!r)return;
+    const dn=i+1, feed=dn<p.switchDay?p.feedA:p.feedB;
+    tip.innerHTML=`<b>${L().day} ${dn} · ${esc(short(feed))}</b>`+
+      L().syms.map((nm,k)=>`<span class="tr"><span>${nm}</span><span>${L().lvl[r.s[k]]}</span></span>`).join("")+
+      `<span class="tr" style="margin-top:5px;border-top:1px solid rgba(255,255,255,.22);padding-top:5px"><span>${L().total}</span><span>${tot(r)} / 15</span></span>`+
+      `<span class="tr"><span>${L().volume}</span><span>${r.v}%</span></span>`+
+      (r.w!=null?`<span class="tr"><span>${L().wtshort}</span><span>${r.w.toFixed(1)} kg</span></span>`:"");
+    const hit=svg.querySelector('.hit[data-i="'+i+'"]'); if(!hit)return;
+    const hb=hit.getBoundingClientRect(), eb=host.getBoundingClientRect(), w=tip.offsetWidth||150;
+    tip.style.opacity="1";
+    tip.style.left=Math.max(4,Math.min(hb.left-eb.left+host.scrollLeft+hb.width/2-w/2,host.scrollWidth-w-4))+"px";
+    tip.style.top="6px"; idx=i;};
+  svg.querySelectorAll(".hit").forEach(h=>{const i=+h.dataset.i;
+    h.addEventListener("pointerenter",()=>show(i)); h.addEventListener("pointerdown",()=>show(i));});
+  svg.addEventListener("pointerleave",()=>{tip.style.opacity="0";idx=-1});
+  svg.addEventListener("blur",()=>{tip.style.opacity="0";idx=-1});
+  svg.addEventListener("keydown",e=>{
+    if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();
+      const n=(o&&o.upto)||p.days.length;
+      idx=idx<0?(e.key==="ArrowRight"?0:n-1):Math.max(0,Math.min(n-1,idx+(e.key==="ArrowRight"?1:-1)));
+      show(idx); const h=svg.querySelector('.hit[data-i="'+idx+'"]'); if(h)h.scrollIntoView({block:"nearest",inline:"nearest"});}
+    if(e.key==="Escape"){tip.style.opacity="0";idx=-1}});
+}
+
+/* ═══ hero ═══ */
+const scrub=document.getElementById("hero-scrub"), replay=document.getElementById("hero-replay");
+let animTok=0;
+function hero(){
+  const p=PATIENTS[0], full=p.days.length, up=Math.min(+scrub.value,full);
+  scrub.max=full;
+  document.getElementById("hero-who").textContent=`${p.name} · ${p.age} ${L().yrs}`;
+  document.getElementById("hero-day").textContent=L().heroday(up,full);
+  document.getElementById("hero-chart").innerHTML=buildTime(p,{slot:19,plotH:132,mode:"score",upto:up,labels:false,dark:true,span:full});
+}
+scrub.addEventListener("input",()=>{animTok++;hero();});
+replay.addEventListener("click",()=>{
+  const my=++animTok, max=+scrub.max; let i=3;
+  replay.textContent=L().playing;
+  const step=()=>{ if(my!==animTok){replay.textContent=L().replay;return;}
+    scrub.value=i; hero(); if(++i<=max)setTimeout(step,55); else replay.textContent=L().replay;};
+  step();
+});
+
+/* ═══ phone ═══ */
+const body=document.getElementById("ph-body");
+function feedOptions(sel){
+  const makers=[...new Set(FEEDS.map(f=>f.m))];
+  return makers.map(m=>`<optgroup label="${esc(m)}">`+
+    FEEDS.filter(f=>f.m===m).map(f=>`<option value="${esc(f.n)}"${f.n===sel?" selected":""}>${esc(f.n)}</option>`).join("")+
+    `</optgroup>`).join("");
+}
+const isWeighIn=()=>current.days.length%7===0;
+function screenToday(){
+  const t=L();
+  const wt=isWeighIn()?`<div class="field"><label for="ph-wt">${t.wtlab}</label>
+      <div class="volrow"><input type="range" id="ph-wt" min="40" max="120" step="0.1" value="${weight}" aria-label="${t.wtlab}"><span class="volval" id="ph-wtv">${weight.toFixed(1)}</span></div>
+      <span class="scr-note" style="text-align:left">${t.wtnote}</span></div>`:"";
+  return `<div class="field"><label for="ph-feed">${t.feed}</label><select id="ph-feed">${feedOptions(feedSel||current.feedB)}</select></div>
+    <div class="field"><span class="fieldlab">${t.vol}</span>
+      <div class="volrow"><input type="range" id="ph-vol" min="0" max="100" value="${vol}" aria-label="${t.vol}"><span class="volval" id="ph-volv">${vol}%</span></div></div>
+    ${wt}
+    <div class="field"><span class="fieldlab">${t.sym}</span><div class="symptoms" id="ph-syms">`+
+    t.syms.map((nm,i)=>`<div class="sym"><span class="nm">${nm}</span><div class="seg" role="group" aria-label="${nm}">`+
+      t.lvl.map((l,k)=>`<button type="button" data-s="${i}" data-lv="${k}" aria-pressed="${draft[i]===k}">${l}</button>`).join("")+
+      `</div></div>`).join("")+
+    `</div></div><button class="save" id="ph-save" type="button">${t.save}</button><p class="scr-note">${t.note}</p>`;
+}
+function screenHistory(){
+  const t=L(), p=current, start=Math.max(0,p.days.length-14);
+  const rows=p.days.map((r,i)=>({r,i})).slice(start).reverse();
+  if(!rows.length)return `<p class="scr-note">${t.histnone}</p>`;
+  return `<span class="fieldlab">${t.hist}</span><div class="hist">`+rows.map(({r,i})=>{
+    const dn=i+1, feed=dn<p.switchDay?p.feedA:p.feedB, open=openDay===i;
+    return `<button class="hrow" type="button" data-d="${i}" aria-expanded="${open}">
+      <span class="top"><span class="dy">${t.day} ${dn}</span><span class="dy" style="font-family:var(--f-mono)">${tot(r)}/15</span></span>
+      <span class="fd">${esc(short(feed))}</span>
+      <span class="dots">${r.s.map(l=>`<i style="background:${sevVar(l)}"></i>`).join("")}</span>`+
+      (open?`<span class="hdet">`+r.s.map((l,k)=>`<div><span>${t.syms[k]}</span><span>${t.lvl[l]}</span></div>`).join("")+
+        `<div><span>${t.volume}</span><span>${r.v}%</span></div></span>`:"")+`</button>`;}).join("")+
+    `</div><p class="scr-note">${t.tapmore}</p>`;
+}
+function screenSummary(){
+  const t=L(), p=current, wkdays=p.days.slice(-7), all=p.days;
+  const scores=wkdays.map(tot).slice().sort((a,b)=>a-b);
+  const med=scores.length?scores[Math.floor(scores.length/2)]:0;
+  const vol=Math.round(mean(wkdays.map(r=>r.v)));
+  const ws=all.map(r=>r.w).filter(x=>x!=null);
+  const wPct=ws.length>1?((ws[ws.length-1]-ws[0])/ws[0]*100):0;
+  const done=all.length, planned=Math.max(done,49);
+  return `<span class="fieldlab">${t.sumt}</span><div class="msum">
+    <div class="fluid">${buildMini(p)}</div>
+    <div class="mbig"><span class="k">${t.k2}</span><span class="v">${med} / 15</span><span class="d">${t.sumtmed}</span></div>
+    <div class="mbig"><span class="k">${t.k4}</span><span class="v">${vol}%</span><span class="d">${t.k4d}</span></div>
+    <div class="mbig"><span class="k">${t.k5}</span><span class="v">${ws.length?ws[ws.length-1].toFixed(1)+" kg":"–"}</span><span class="d">${wPct>0?"+":""}${wPct.toFixed(1)}% ${t.k5d}</span></div>
+    <div class="mbig"><span class="k">${t.k1}</span><span class="v">${done} / ${planned}</span><span class="d">${t.k1d}</span></div>
+    <p>${t.sumnote}</p></div>`;
+}
+function renderPhone(){
+  const t=L();
+  document.getElementById("ph-who").textContent=`${current.name} · ${current.age} ${t.yrs}`;
+  document.getElementById("ph-when").textContent=`${t.day} ${current.days.length+1} · ${t.dow[current.days.length%7]}`;
+  document.getElementById("ph-streak").textContent=t.week(Math.min(7,Math.floor(current.days.length/7)+1));
+  t.tabs.forEach((l,i)=>document.getElementById("pt-l"+(i+1)).textContent=l);
+  body.innerHTML=phoneTab==="today"?screenToday():phoneTab==="history"?screenHistory():screenSummary();
+  if(phoneTab==="today"){
+    document.getElementById("ph-feed").addEventListener("change",e=>{feedSel=e.target.value;});
+    const vr=document.getElementById("ph-vol");
+    vr.addEventListener("input",e=>{vol=+e.target.value;document.getElementById("ph-volv").textContent=vol+"%";});
+    const wr=document.getElementById("ph-wt");
+    if(wr)wr.addEventListener("input",e=>{weight=+e.target.value;document.getElementById("ph-wtv").textContent=weight.toFixed(1);});
+    document.getElementById("ph-syms").addEventListener("click",e=>{
+      const b=e.target.closest("button[data-s]"); if(!b)return;
+      const si=+b.dataset.s, lv=+b.dataset.lv; draft[si]=lv;
+      document.querySelectorAll('#ph-syms button[data-s="'+si+'"]').forEach(x=>x.setAttribute("aria-pressed",String(+x.dataset.lv===lv)));});
+    document.getElementById("ph-save").addEventListener("click",saveDay);
+  } else if(phoneTab==="history"){
+    body.addEventListener("click",e=>{const b=e.target.closest("button[data-d]"); if(!b)return;
+      const i=+b.dataset.d; openDay=openDay===i?-1:i; renderPhone();});
+  }
+}
+document.querySelector(".ptabs").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-pt]"); if(!b)return;
+  phoneTab=b.dataset.pt;
+  document.querySelectorAll(".ptabs button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.pt===phoneTab)));
+  renderPhone();});
+
+const toast=document.getElementById("toast"); let tT;
+function say(m){document.getElementById("toast-msg").textContent=m;toast.classList.add("on");
+  clearTimeout(tT);tT=setTimeout(()=>toast.classList.remove("on"),5200);}
+document.getElementById("toast-go").addEventListener("click",()=>{
+  toast.classList.remove("on");document.getElementById("data").scrollIntoView({behavior:"smooth"})});
+function saveDay(){
+  const btn=document.getElementById("ph-save");
+  current.days.push({s:draft.slice(),v:vol,w:isWeighIn()?weight:null});
+  const n=current.days.length;
+  btn.textContent="✓ "+L().saved; btn.classList.add("done");
+  say(L().toast(n));
+  draft=[0,0,0,0,0]; openDay=n-1;
+  setTimeout(()=>{phoneTab="history";
+    document.querySelectorAll(".ptabs button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.pt==="history")));
+    renderPhone(); renderAll();},620);
+}
+
+/* ═══ workbench ═══ */
+const pchips=document.getElementById("pchips");
+function renderChips(){
+  pchips.innerHTML=PATIENTS.map(p=>{
+    const b=mean(p.days.slice(0,p.switchDay-1).map(tot)), a=mean(p.days.slice(p.switchDay-1).map(tot));
+    return `<button class="chipbtn" type="button" data-p="${p.id}" aria-pressed="${p.id===current.id}">${p.name} · ${p.age}${b-a>1.2?"":L().nochange}</button>`;}).join("");
+}
+pchips.addEventListener("click",e=>{const b=e.target.closest("button[data-p]"); if(!b)return;
+  current=PATIENTS.find(p=>p.id===b.dataset.p); draft=[0,0,0,0,0]; feedSel=null; openDay=-1;
+  weight=lastWeight(current);
+  renderPhone(); renderAll();});
+document.getElementById("mchips").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-m]"); if(!b)return;
+  metric=b.dataset.m;
+  document.querySelectorAll("#mchips button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.m===metric)));
+  renderDetail();});
+document.getElementById("tblfilters").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-f]"); if(!b)return;
+  tFilter=b.dataset.f;
+  document.querySelectorAll("#tblfilters button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.f===tFilter)));
+  renderTable();});
+
+function renderDetail(){
+  const t=L(), p=current, pre=p.days.slice(0,p.switchDay-1), post=p.days.slice(p.switchDay-1);
+  const bT=mean(pre.map(tot)), aT=mean(post.map(tot)), bV=mean(pre.map(r=>r.v)), aV=mean(post.map(r=>r.v));
+  const ws=p.days.map(r=>r.w).filter(w=>w!=null);
+  const w0=ws[0], w1=ws[ws.length-1], wPct=(w1-w0)/w0*100;
+  document.getElementById("d-title").textContent=`${p.name} · ${p.age} ${t.yrs}`;
+  document.getElementById("d-sub").textContent=t.dsub(t[p.noteK],short(p.feedA),short(p.feedB),p.switchDay,p.days.length);
+  document.getElementById("d-tiles").innerHTML=`
+    <div class="tile"><span class="k">${t.t1}</span><span class="v">${bT.toFixed(1)}<span class="ar">→</span>${aT.toFixed(1)}</span><span class="d">${t.t1d}</span></div>
+    <div class="tile"><span class="k">${t.t2}</span><span class="v">${Math.round(bV)}%<span class="ar">→</span>${Math.round(aV)}%</span><span class="d">${t.t2d}</span></div>
+    <div class="tile"><span class="k">${t.t4}</span><span class="v">${w0.toFixed(1)}<span class="ar">→</span>${w1.toFixed(1)}</span><span class="d">${t.t4d} ${wPct>0?"+":""}${wPct.toFixed(1)}%</span></div>
+`;
+  const host=document.getElementById("chart-host"), lg=document.getElementById("d-legend");
+  if(metric==="weight"){
+    host.className="scroller"; host.innerHTML=buildWeight(p);
+    lg.innerHTML=`<span><i class="dotkey" style="background:var(--sev-3)"></i> ${t.lg_wt}</span>`+
+      `<span style="color:var(--ink-3)">${t.lg_wtn}</span>`;
+  } else if(metric==="change"){
+    host.className="fluid"; host.innerHTML=buildChange(p);
+    lg.innerHTML=`<span><i class="dotkey" style="background:var(--surface);border:2px solid var(--ink-3)"></i> ${t.lg_before}</span>`+
+      `<span><i class="dotkey" style="background:var(--sev-3)"></i> ${t.lg_after}</span>`+
+      `<span style="color:var(--ink-3)">${t.lg_chgn}</span>`;
+  } else {
+    paintTime(host,p,{slot:19,plotH:172,mode:metric});
+    lg.innerHTML=metric==="mix"
+      ? `<span class="ramp"><i style="background:var(--sev-0)"></i><i style="background:var(--sev-1)"></i><i style="background:var(--sev-2)"></i><i style="background:var(--sev-3)"></i></span><span>${t.lg_mix}</span><span style="color:var(--ink-3)">${t.lg_mixn}</span>`
+      : metric==="score"
+      ? `<span class="ramp"><i style="background:var(--sev-3)"></i></span><span>${t.lg_score}</span><span style="color:var(--ink-3)">${t.lg_scoren}</span>`
+      : `<span class="ramp"><i style="background:var(--green)"></i></span><span>${t.lg_vol}</span><span style="color:var(--ink-3)">${t.lg_scoren}</span>`;
+  }
+  document.getElementById("scatter").innerHTML=buildScatter(p);
+  document.getElementById("scatter-legend").innerHTML=
+    `<span><i class="dotkey" style="background:var(--surface);border:2px solid var(--ink-3)"></i> ${esc(short(p.feedA))}</span>`+
+    `<span><i class="dotkey" style="background:var(--sev-3)"></i> ${esc(short(p.feedB))}</span>`;
+  renderTable();
+}
+
+function renderSmallMults(){
+  document.getElementById("smallmults").innerHTML=PATIENTS.map(p=>{
+    const b=mean(p.days.slice(0,p.switchDay-1).map(tot)), a=mean(p.days.slice(p.switchDay-1).map(tot));
+    return `<div class="sm"><span class="nm">${p.name} · ${p.age}</span><span class="mt">${b.toFixed(1)} → ${a.toFixed(1)}</span>`+
+      `<div class="fluid">${buildMini(p)}</div><span class="fd">${esc(short(p.feedA))} → ${esc(short(p.feedB))}</span></div>`;}).join("");
+}
+
+const CKEY=["day","feed","s0","s1","s2","s3","s4","total","vol","wt"];
+function renderTable(){
+  const t=L(), p=current;
+  let rows=p.days.map((r,i)=>({day:i+1,feed:i+1<p.switchDay?p.feedA:p.feedB,
+    s0:r.s[0],s1:r.s[1],s2:r.s[2],s3:r.s[3],s4:r.s[4],total:tot(r),vol:r.v,wt:r.w}));
+  if(tFilter==="a")rows=rows.filter(r=>r.day<p.switchDay);
+  if(tFilter==="b")rows=rows.filter(r=>r.day>=p.switchDay);
+  if(tFilter==="bad")rows=rows.filter(r=>r.total>=6);
+  rows.sort((a,b)=>{let x=a[sortKey],y=b[sortKey];
+    if(x==null)x=-1; if(y==null)y=-1;
+    return (typeof x==="string"?x.localeCompare(y):x-y)*sortDir;});
+  const head=CKEY.map((k,ci)=>{const l=ci>1&&ci<7?t.syms[ci-2]:t.cols[ci];
+    return `<th data-sort="${k}" tabindex="0" role="button">${l}${sortKey===k?`<span class="ind">${sortDir>0?"▲":"▼"}</span>`:""}</th>`;}).join("");
+  document.getElementById("tbl").innerHTML=`<table><thead><tr>${head}</tr></thead><tbody>`+
+    rows.map(r=>`<tr><td>${r.day}</td><td style="text-align:left">${esc(short(r.feed))}</td>`+
+      [r.s0,r.s1,r.s2,r.s3,r.s4].map(l=>`<td>${t.lvl[l]}</td>`).join("")+
+      `<td><b>${r.total}</b></td><td>${r.vol}%</td><td>${r.wt==null?"–":r.wt.toFixed(1)}</td></tr>`).join("")+`</tbody></table>`;
+  document.getElementById("tblcount").textContent=t.tblcount(rows.length,p.days.length);
+}
+document.getElementById("tbl").addEventListener("click",e=>{
+  const th=e.target.closest("th[data-sort]"); if(th)doSort(th.dataset.sort);});
+document.getElementById("tbl").addEventListener("keydown",e=>{
+  if(e.key!=="Enter"&&e.key!==" ")return;
+  const th=e.target.closest("th[data-sort]"); if(!th)return; e.preventDefault(); doSort(th.dataset.sort);});
+function doSort(k){if(sortKey===k)sortDir*=-1;else{sortKey=k;sortDir=1}renderTable();}
+
+/* ═══ aggregate ═══ */
+const sN=document.getElementById("s-n");
+document.getElementById("catchips").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-c]"); if(!b)return;
+  aggCat=b.dataset.c;
+  document.querySelectorAll("#catchips button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.c===aggCat)));
+  renderAgg();});
+sN.addEventListener("input",renderAgg);
+function renderAgg(){
+  const n=+sN.value, t=L();
+  document.getElementById("catchips").innerHTML=t.cats.map(([k,l])=>
+    `<button class="chipbtn" type="button" data-c="${k}" aria-pressed="${k===aggCat}">${l}</button>`).join("");
+  document.getElementById("v-n").textContent=n;
+  document.getElementById("agg").innerHTML=buildAgg(n,aggCat);
+  document.getElementById("agg-legend").innerHTML=
+    `<span><i class="dotkey" style="background:var(--green)"></i> ${t.ag_l1}</span>`+
+    `<span><i class="dotkey" style="background:var(--ink-3)"></i> ${t.ag_l2}</span>`+
+    `<span style="color:var(--ink-3)">${t.ag_l3}</span>`;
+  aggRead(n,aggCat);
+}
+
+function renderPapers(){
+  const sem=PATIENTS[0];
+  document.getElementById("paper-spark").innerHTML=buildMini(sem);
+  document.getElementById("paper-heat").innerHTML=buildTime(sem,{slot:6,mode:"mix",upto:49,span:49,rowH:17});
+}
+function renderAll(){renderChips();renderDetail();renderSmallMults();renderPapers();renderAgg();hero();}
+
+/* ═══ sizer ═══ */
+const sP=document.getElementById("s-pat"),sW=document.getElementById("s-wk"),sS=document.getElementById("s-sh");
+function sizer(){
+  const p=+sP.value,w=+sW.value,sh=+sS.value,t=L();
+  document.getElementById("v-pat").textContent=p;
+  document.getElementById("v-wk").textContent=t.wk(w);
+  document.getElementById("v-sh").textContent=sh+"%";
+  const days=p*w*7, loc=lang==="nl"?"nl-NL":"en-GB";
+  document.getElementById("o-days").textContent=days.toLocaleString(loc);
+  document.getElementById("o-obs").textContent=(days*5).toLocaleString(loc);
+  document.getElementById("o-cases").textContent=Math.round(p*sh/100);
+  document.getElementById("o-wt").textContent=(p*w).toLocaleString(loc);
+}
+[sP,sW,sS].forEach(x=>x.addEventListener("input",sizer));
+
+/* ═══ language ═══ */
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-t]").forEach(el=>{
+    const v=L()[el.dataset.t]; if(typeof v==="string")el.innerHTML=v;});
+  document.getElementById("toast-go").textContent=L().seech;
+  replay.textContent=L().replay;
+  renderPhone(); sizer(); renderAll();
+}
+document.querySelector(".hlang").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-lang]"); if(!b||b.dataset.lang===lang)return;
+  lang=b.dataset.lang;
+  document.querySelectorAll(".hlang button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.lang===lang)));
+  applyLang();});
+
+/* ═══ nav ═══ */
+const links=[...document.querySelectorAll(".nav a")];
+const obs=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting)
+  links.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+en.target.id));});},
+  {rootMargin:"-62px 0px -72% 0px"});
+["problem","weight","log","data","keep","outputs","pilot","questions"].forEach(id=>{
+  const el=document.getElementById(id); if(el)obs.observe(el);});
+
+/* ═══ boot ═══ */
+applyLang();
+</script>
+
+</body>
+</html>
